@@ -17,7 +17,7 @@ int main()
 	int cbit = sizeof(Character);
 	int ncbit = sizeof(noCharacter);
 
-	MyVector* v;
+	MyVector v;
 
 
 
