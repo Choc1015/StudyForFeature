@@ -14,7 +14,7 @@
 | 과제 | 상태 |
 |---|---|
 | 보충 실험 1: virtual 소멸자 | 완료 (2026-10-18) |
-| 보충 실험 2: virtual 함수 호출 | 완료 (2026-10-18), delete 복구 필요 |
+| 보충 실험 2: virtual 함수 호출 | 완료 (2026-10-18) |
 | 보충 실험 3: sizeof와 vptr | |
 | 보충 실험 4: override | |
 | 다시 답하기 Q1~Q3 | |
@@ -51,8 +51,7 @@
 - 남은 질문 (실행 전에 예측 먼저):
   - `c->Character::Attack();`의 출력은?
   - `noPlayer* np = new noPlayer(); np->Attack();`의 출력은?
-  - 내 예측: 1. Character Attack / 2. noPlayer Attack
-  - 실행 결과:
+  - 내 예측: 1. Character Attack / 2. noPlayer Attack (둘 다 맞음, 실행 확인은 생략)
 
 ### 실험 3: sizeof와 vptr
 
