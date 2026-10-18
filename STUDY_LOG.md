@@ -151,7 +151,8 @@
   push_back(5) -> size 5, capacity 8, data [1, 2, 4, 4, 5]
   Detected memory leaks! 4 bytes, 8 bytes, 16 bytes (값은 전부 CD = 한 번도 안 쓴 메모리)
   ```
-- 남은 버그: 판을 늘릴 때마다 누수. 4, 8, 16바이트는 정확히 int 1칸, 2칸, 4칸 = 판을 늘리던 순간의 옛날 capacity 크기. 원인은 `int* temp = new int[capacityValue];` 다음 줄에서 `temp = data;`로 덮어써서 방금 만든 배열을 잃어버리는 것.
+- 남은 버그: 판을 늘릴 때마다 누수. 4, 8, 16바이트는 정확히 int 1칸, 2칸, 4칸 = 판을 늘리던 순간의 옛날 capacity 크기. 원인은 판 늘리기 분기 안에 있다. (직접 찾기)
+  - 내가 찾은 원인:
 
 ---
 
