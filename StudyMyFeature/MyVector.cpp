@@ -1,5 +1,5 @@
 #include "MyVector.h"
-
+#include <cassert>
 
 
 MyVector::MyVector()
@@ -49,11 +49,13 @@ void MyVector::push_back(int InValue)
 
 }
 
-int MyVector::operator[](int Invalue)
+int &MyVector::operator[](int Invalue)
 {
-	if (Invalue > capacityValue || Invalue < 0)
+	//assert();
+	if (Invalue >= sizeValue || Invalue < 0)
 	{
-		return -1;
+		//return;
 	}
+
 	return data[Invalue];
 }

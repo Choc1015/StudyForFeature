@@ -16,5 +16,5 @@ public:
 
     void push_back(int InValue);
 
-    int operator[](int Invalue);
+    int &operator[](int Invalue);
 };
