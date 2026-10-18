@@ -4,7 +4,7 @@
 
 MyVector::MyVector()
 {
-	data = new int[0];
+	data = nullptr;
 	size = 0;
 	capacity = 0;
 
@@ -13,5 +13,5 @@ MyVector::MyVector()
 
 MyVector::~MyVector()
 {
-	delete data;
+	delete[] data;
 }

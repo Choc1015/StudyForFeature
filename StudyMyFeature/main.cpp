@@ -2,6 +2,7 @@
 #include "noCharacter.h"
 #include "Player.h"
 #include "noPlayer.h"
+#include "MyVector.h"
 
 
 int main()
@@ -15,6 +16,9 @@ int main()
 	
 	int cbit = sizeof(Character);
 	int ncbit = sizeof(noCharacter);
+
+	MyVector* v;
+
 
 
 	delete c;
