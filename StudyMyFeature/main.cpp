@@ -12,6 +12,11 @@ int main()
 	c->Attack(); // Player Attack
 	nc->Attack(); // noCharacter Attack
 
+	
+	int cbit = sizeof(Character);
+	int ncbit = sizeof(noCharacter);
+
+
 	delete c;
 	delete nc;
 
