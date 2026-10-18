@@ -30,8 +30,7 @@ void MyVector::push_back(int InValue)
 
 	if (sizeValue == capacityValue)
 	{
-		int* temp = new int[capacityValue];
-		temp = data;
+		int* temp = data;
 
 		capacityValue *= 2;
 		data = new int[capacityValue];

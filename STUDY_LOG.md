@@ -19,7 +19,7 @@
 | 보충 실험 4: override | 완료 (2026-10-18) |
 | 다시 답하기 Q1~Q3 | 완료 (2026-10-18) |
 | MyVector 0단계: 멤버 변수, 생성자, 소멸자 | 완료 (2026-10-18) |
-| MyVector 1단계: int 전용 | A~C 완료 (값은 맞음, 누수 1개 남음), D 남음 |
+| MyVector 1단계: int 전용 | A~C 완료 (누수 없음), D 남음 |
 | MyVector 2단계: 복사 | |
 | MyVector 3단계: 템플릿, 이동 | |
 | MyVector 4단계: 테스트, 성능 비교 | |
@@ -152,7 +152,9 @@
   Detected memory leaks! 4 bytes, 8 bytes, 16 bytes (값은 전부 CD = 한 번도 안 쓴 메모리)
   ```
 - 남은 버그: 판을 늘릴 때마다 누수. 4, 8, 16바이트는 정확히 int 1칸, 2칸, 4칸 = 판을 늘리던 순간의 옛날 capacity 크기. 원인은 판 늘리기 분기 안에 있다. (직접 찾기)
-  - 내가 찾은 원인:
+  - 고침: `int* temp = new int[capacityValue]; temp = data;` → `int* temp = data;`
+  - 재검증: 값은 그대로 `[1, 2, 4, 4, 5]`, 누수 검사 `no leaks`
+  - 내가 찾은 원인 (내 말로):
 
 ---
 
