@@ -48,3 +48,12 @@ void MyVector::push_back(int InValue)
 
 
 }
+
+int MyVector::operator[](int Invalue)
+{
+	if (Invalue > capacityValue || Invalue < 0)
+	{
+		return -1;
+	}
+	return data[Invalue];
+}
