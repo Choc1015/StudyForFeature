@@ -30,7 +30,7 @@ int main()
 
 	v[2] = 3;
 
-	cout << v[3] << ", " << v[-1] << endl;
+	cout << v[3] << ", " << v[1] << endl;
 
 	delete c;
 	delete nc;
