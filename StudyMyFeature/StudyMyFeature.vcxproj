@@ -125,12 +125,14 @@
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyVector.cpp" />
     <ClCompile Include="noCharacter.cpp" />
     <ClCompile Include="noPlayer.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="MyVector.h" />
     <ClInclude Include="noCharacter.h" />
     <ClInclude Include="noPlayer.h" />
     <ClInclude Include="Player.h" />
