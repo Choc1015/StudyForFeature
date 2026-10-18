@@ -3,7 +3,9 @@
 #include "Player.h"
 #include "noPlayer.h"
 #include "MyVector.h"
+#include <iostream>
 
+using namespace std;
 
 int main()
 {
@@ -19,7 +21,7 @@ int main()
 
 	MyVector v;
 
-
+	cout << v.size() << ", " << v.capacity() << endl;
 
 	delete c;
 	delete nc;

@@ -5,8 +5,8 @@
 MyVector::MyVector()
 {
 	data = nullptr;
-	size = 0;
-	capacity = 0;
+	sizeValue = 0;
+	capacityValue = 0;
 
 
 }
