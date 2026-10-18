@@ -11,7 +11,10 @@ public:
     MyVector();       // 처음 판 만들기 (미리 몇 칸 잡기로 했죠?)
     ~MyVector();      // 판 버리기
 
-    inline int size() const { return sizeValue; };
-    inline int capacity() const { return capacityValue; };
+    int size() const { return sizeValue; }
+    int capacity() const { return capacityValue; }
+
+    void push_back(int InValue);
+
 
 };

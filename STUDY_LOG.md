@@ -19,7 +19,7 @@
 | 보충 실험 4: override | 완료 (2026-10-18) |
 | 다시 답하기 Q1~Q3 | 완료 (2026-10-18) |
 | MyVector 0단계: 멤버 변수, 생성자, 소멸자 | 완료 (2026-10-18) |
-| MyVector 1단계: int 전용 | A 완료 (size, capacity), B~D 남음 |
+| MyVector 1단계: int 전용 | A~C 완료 (값은 맞음, 누수 1개 남음), D 남음 |
 | MyVector 2단계: 복사 | |
 | MyVector 3단계: 템플릿, 이동 | |
 | MyVector 4단계: 테스트, 성능 비교 | |
@@ -134,6 +134,24 @@
     3. 지금 `inline`의 주된 의미는 "헤더에 함수 정의를 둬서 여러 .cpp에서 include해도 링크 에러가 안 나게 한다"이다.
   - "효율이 좋다고 해서"는 들은 이야기다. 실험처럼 출처를 확인하는 습관을 들일 것.
   - 사소한 것: `{ return sizeValue; };`의 마지막 `;`는 필요 없다.
+
+### MyVector 1단계 B, C: push_back과 판 늘리기 (2026-10-19)
+
+- B만 하라고 했는데 C(2배로 늘리기)까지 직접 구현. capacity가 0일 때(0의 2배는 0) 문제를 따로 분기해서 해결했다.
+- 첫 버그: 값이 안 들어감
+  - 처음 진단: "temp에서 첫 번째 값만 기억하고 있다" → 디버거가 `int*`를 첫 칸만 보여 줘서 생긴 착각. 조사식에 `temp,2`처럼 쓰면 배열로 펼쳐 볼 수 있다.
+  - 다시 찾은 패턴: 1, (2), 4, (4) 중 괄호 친 값만 빠진다.
+  - 원인: 빠진 호출은 모두 "판 늘리기" 분기로 들어갔고, 그 분기 끝의 `return;` 때문에 새 값을 넣는 줄까지 못 내려감. → `return;` 지우고 `delete[] temp;` 추가
+- 검증 (별도 검사 프로그램, 디버그 힙 누수 검사):
+  ```
+  push_back(1) -> size 1, capacity 1, data [1]
+  push_back(2) -> size 2, capacity 2, data [1, 2]
+  push_back(4) -> size 3, capacity 4, data [1, 2, 4]
+  push_back(4) -> size 4, capacity 4, data [1, 2, 4, 4]
+  push_back(5) -> size 5, capacity 8, data [1, 2, 4, 4, 5]
+  Detected memory leaks! 4 bytes, 8 bytes, 16 bytes (값은 전부 CD = 한 번도 안 쓴 메모리)
+  ```
+- 남은 버그: 판을 늘릴 때마다 누수. 4, 8, 16바이트는 정확히 int 1칸, 2칸, 4칸 = 판을 늘리던 순간의 옛날 capacity 크기. 원인은 `int* temp = new int[capacityValue];` 다음 줄에서 `temp = data;`로 덮어써서 방금 만든 배열을 잃어버리는 것.
 
 ---
 
