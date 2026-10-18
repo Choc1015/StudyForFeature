@@ -6,4 +6,5 @@ public:
 	noCharacter();
 	~noCharacter();
 
+	void Attack();
 };

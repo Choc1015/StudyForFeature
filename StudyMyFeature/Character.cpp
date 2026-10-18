@@ -10,3 +10,8 @@ Character::~Character()
 	std::cout << "Character" << std::endl;
 }
 
+void Character::Attack()
+{
+	std::cout << "Character Attack" << std::endl;
+}
+

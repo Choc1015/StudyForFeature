@@ -14,7 +14,7 @@
 | 과제 | 상태 |
 |---|---|
 | 보충 실험 1: virtual 소멸자 | 완료 (2026-10-18) |
-| 보충 실험 2: virtual 함수 호출 | |
+| 보충 실험 2: virtual 함수 호출 | 완료 (2026-10-18), delete 복구 필요 |
 | 보충 실험 3: sizeof와 vptr | |
 | 보충 실험 4: override | |
 | 다시 답하기 Q1~Q3 | |
@@ -38,10 +38,21 @@
 - 남은 질문: 왜 `Player`가 `Character`보다 먼저 출력될까? 생성자는 어떤 순서일까?
   - 내 답:
 
-### 실험 2: virtual 함수 호출
+### 실험 2: virtual 함수 호출 (2026-10-18)
 
-- 결과 (virtual 없을 때 / 있을 때):
-- 내 해석:
+- 코드: 실험 1의 두 쌍에 `Attack()` 추가. `Character::Attack`만 virtual, `Player::Attack`에 override
+- 결과 (virtual 있을 때 / 없을 때): `Player Attack` / `noCharacter Attack`
+- 내 해석 (처음): 가상함수로 오버라이딩 했을 때는 character의 attack 함수에 player attack 함수가 덮어졌지만, 하지 않았을 때는 noPlayer attack을 읽어오지 못하고 noCharacter의 attack 함수를 실행했다.
+- 내 해석 (리뷰 후): 가상함수로 오버라이딩 했을 때는 가상 포인터가 Player의 가상 테이블을 읽고 Player의 Attack 함수를 대신 실행시킨다. 하지 않았을 때는 다른 객체를 보지 않고 noCharacter의 Attack 함수를 실행했다.
+- 리뷰에서 다듬은 점:
+  - "덮어졌다"가 아니다. `Character::Attack`은 그대로 남아 있다. 객체 안의 vptr이 Player의 vtable을 가리키고, 실행 중에 그 테이블에서 `Player::Attack`을 찾아 부른다 (동적 바인딩).
+  - virtual이 없으면 "읽어오지 못한" 게 아니라, 컴파일러가 포인터 타입(`noCharacter*`)을 보고 컴파일 시점에 정한다 (정적 바인딩). 실험 1과 같은 원리.
+  - 버그: `main`에서 `delete c; delete nc;`를 지워서 메모리 누수가 생겼다. → 고침
+- 남은 질문 (실행 전에 예측 먼저):
+  - `c->Character::Attack();`의 출력은?
+  - `noPlayer* np = new noPlayer(); np->Attack();`의 출력은?
+  - 내 예측: 1. Character Attack / 2. noPlayer Attack
+  - 실행 결과:
 
 ### 실험 3: sizeof와 vptr
 

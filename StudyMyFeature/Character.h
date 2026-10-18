@@ -7,6 +7,7 @@ public:
 	Character();
 	virtual ~Character();
 
+	virtual void Attack();
 
 
 

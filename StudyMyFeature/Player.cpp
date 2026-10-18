@@ -9,3 +9,8 @@ Player::~Player()
 {
 	std::cout << "Player" << std::endl;
 }
+
+void Player::Attack()
+{
+	std::cout << "Player Attack" << std::endl;
+}

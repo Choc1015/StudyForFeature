@@ -9,6 +9,9 @@ int main()
 	Character* c = new Player();
 	noCharacter* nc = new noPlayer();
 
+	c->Attack(); // Player Attack
+	nc->Attack(); // noCharacter Attack
+
 	delete c;
 	delete nc;
 

@@ -10,3 +10,8 @@ noPlayer::~noPlayer()
 {
 	std::cout << "noPlayer" << std::endl;
 }
+
+void noPlayer::Attack()
+{
+	std::cout << "noPlayer Attack" << std::endl;
+}
