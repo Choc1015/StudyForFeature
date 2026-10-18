@@ -51,11 +51,8 @@ void MyVector::push_back(int InValue)
 
 int &MyVector::operator[](int Invalue)
 {
-	//assert();
-	if (Invalue >= sizeValue || Invalue < 0)
-	{
-		//return;
-	}
+	assert(Invalue < sizeValue && Invalue >=0);
+	
 
 	return data[Invalue];
 }
