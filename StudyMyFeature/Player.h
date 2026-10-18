@@ -10,5 +10,5 @@ public:
 	Player();
 	~Player();
 
-	virtual void Attack() override;
+	virtual void Attack();
 };
