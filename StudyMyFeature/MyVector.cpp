@@ -82,6 +82,7 @@ int& MyVector::operator[](int Invalue)
 
 MyVector& MyVector::operator=(const MyVector& InVector)
 {
+	delete[] data;
 	if (this == &InVector)
 	{
 		return *this;
@@ -89,13 +90,16 @@ MyVector& MyVector::operator=(const MyVector& InVector)
 
 	if (InVector.capacityValue == 0)
 	{
-		delete[] data;
+		data = nullptr;
+		sizeValue = 0;
+		capacityValue = 0;
 	}
-
-	data = new int[InVector.capacityValue];
-	sizeValue = InVector.sizeValue;
-	capacityValue = InVector.capacityValue;
-
+	else
+	{
+		data = new int[InVector.capacityValue];
+		sizeValue = InVector.sizeValue;
+		capacityValue = InVector.capacityValue;
+	}
 
 	for (int i = 0; i < InVector.size(); i++)
 	{
