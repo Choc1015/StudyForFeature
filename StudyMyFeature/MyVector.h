@@ -19,4 +19,6 @@ public:
     void push_back(int InValue);
 
     int &operator[](int Invalue);
+
+    MyVector& operator=(MyVector InVector);
 };
