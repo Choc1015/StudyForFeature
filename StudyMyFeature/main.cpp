@@ -1,4 +1,6 @@
 #include "MyVector.h"
+#include "Character.h"
+#include "Player.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -76,17 +78,26 @@ void TestMoveAssign()
 	assert(a.size() == 0);
 }
 
+void Spawn(bool bCancel)
+{
+	Character* c = new Player();   // ич
+	if (bCancel)                   // иш
+	{
+		return;                    // ищ
+	}
+	delete c;                      // иъ
+}
+
 
 int main()
 {
 
-	TestCopyConstruct();
-	TestCopyAssign();
-	TestMoveConstruct();
-	TestMoveAssign();
-
-
+	Spawn(false);
+	cout << "---" << endl;
+	Spawn(true);
 
 	return 0;
 }
+
+
 
