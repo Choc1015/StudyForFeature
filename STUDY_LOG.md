@@ -23,7 +23,7 @@
 | MyVector 2단계: 복사 | 완료 (2026-10-19) |
 | MyVector 3단계: 템플릿, 이동 | 완료 (2026-10-19) |
 | MyVector 4단계: 테스트, 성능 비교 | 완료 (2026-10-19) |
-| 스마트 포인터 1: 직접 delete의 함정 | |
+| 스마트 포인터 1: 직접 delete의 함정 | 완료 (2026-10-20) |
 | 스마트 포인터 2: unique_ptr | |
 | 스마트 포인터 3: shared_ptr | |
 | 스마트 포인터 4: weak_ptr | |
@@ -382,7 +382,7 @@
     ```
   - **테스트 완료. MyVector 완성.**
 
-### 스마트 포인터 1: 직접 delete의 함정 (2026-10-19, 진행 중)
+### 스마트 포인터 1: 직접 delete의 함정 (2026-10-19 ~ 2026-10-20)
 
 - 코드: `Spawn(bool bCancel)` 안에서 `Character* c = new Player();`, bCancel이면 delete 전에 return
 - 내 예측:
@@ -406,6 +406,8 @@
 - MyUniquePtr 2차: 멤버 `T*`, 주소 그대로 저장, 소멸자에서 `delete[] SavePointer;`
   - 결과: `Player / Character / --- / Player / Character` ← return으로 일찍 나가도 해제됨
   - 리뷰: 원하는 출력은 나왔지만 `new`(하나)로 만든 걸 `delete[]`(배열)로 해제하고 있다. 짝이 안 맞아 정의되지 않은 동작. 지금은 우연히 동작한 것.
+- MyUniquePtr 3차: `delete[]` → `delete`. 결과 동일, 정상 종료.
+- **스마트 포인터 1 완료.**
 
 ### MyVector 설계 결정
 

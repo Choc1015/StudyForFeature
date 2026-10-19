@@ -12,7 +12,7 @@ public:
 	}
 	virtual ~MyUniquePtr()
 	{
-		delete[] SavePointer;
+		delete SavePointer;
 	}
 
 
