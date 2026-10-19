@@ -232,6 +232,15 @@
     1. 링크 에러: 템플릿은 설계도라서, 실제 `MyVector<int>` 코드는 쓰는 곳(main.cpp)에서 함수 정의를 보고 만들어진다. 정의가 MyVector.cpp에만 있으면 main.cpp는 볼 수 없다.
     2. 너무 많이 바꿨다: `sizeValue`, `capacityValue`, `size()`, `capacity()`, `operator[]`의 번호 매개변수까지 T가 됨. 개수와 번호는 담는 타입과 상관없이 정수다.
     3. 덜 바꿨다: push_back과 대입 연산자 안의 `new int[...]` 세 곳이 그대로.
+- 내 질문: 헤더에 다 넣으면 분리하는 이유가 사라지는데?
+  - 리뷰: 맞다. 템플릿은 쓰는 곳에서 본문을 봐야 해서 분리의 장점(한 번만 컴파일, 구현 숨기기)이 사라진다. 선택지는 헤더에 전부 / .inl 파일을 헤더 끝에서 include / .cpp에서 쓸 타입을 미리 지정. 보통은 헤더에 전부 (std::vector, TArray).
+- 2차: 헤더에 전부 옮김 (MyVector.cpp는 비움). `size()`, `capacity()` 반환 타입은 int로 돌려놓음. `MyVector<string>`에 "lemon"을 넣어 보려 함.
+  - 빌드 결과:
+    ```
+    MyVector.h(87): error C2676: 이항 '>=': 'T'이(가) 이 연산자를 정의하지 않거나 ... with [ T=std::string ]
+    MyVector.h(90): error C2677: 이항 '[': 'T' 형식을 사용하는 전역 연산자가 없거나 ... with [ T=std::string ]
+    ```
+  - 리뷰: 1차 리뷰의 2번, 3번이 아직 남아 있다. operator[]의 번호 매개변수가 T라서 "lemon" 벡터는 번호도 string이 된다. 이걸 고치면 sizeValue, capacityValue(T)와 new int 세 곳에서 다음 에러가 나올 것.
 
 ### MyVector 설계 결정
 
