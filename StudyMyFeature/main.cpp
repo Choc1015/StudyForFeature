@@ -32,6 +32,11 @@ int main()
 
 	cout << v[3] << ", " << v[1] << endl;
 
+	MyVector a;
+	a.push_back(1);
+	MyVector b = a;
+
+
 	delete c;
 	delete nc;
 
