@@ -82,12 +82,12 @@ int& MyVector::operator[](int Invalue)
 
 MyVector& MyVector::operator=(const MyVector& InVector)
 {
-	delete[] data;
+	
 	if (this == &InVector)
 	{
 		return *this;
 	}
-
+	delete[] data;
 	if (InVector.capacityValue == 0)
 	{
 		data = nullptr;

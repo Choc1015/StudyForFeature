@@ -20,7 +20,7 @@
 | 다시 답하기 Q1~Q3 | 완료 (2026-10-18) |
 | MyVector 0단계: 멤버 변수, 생성자, 소멸자 | 완료 (2026-10-18) |
 | MyVector 1단계: int 전용 | 완료 (2026-10-19) |
-| MyVector 2단계: 복사 | |
+| MyVector 2단계: 복사 | 완료 (2026-10-19) |
 | MyVector 3단계: 템플릿, 이동 | |
 | MyVector 4단계: 테스트, 성능 비교 | |
 
@@ -133,7 +133,7 @@
   ```
 - **1단계 완료.**
 
-### MyVector 2단계: 복사 (2026-10-19, 진행 중)
+### MyVector 2단계: 복사 (2026-10-19)
 
 - 코드: 복사 생성자 없이 `MyVector a; a.push_back(1); MyVector b = a;`
 - 내 예측: 잘 모르겠다. 그냥 값이 옮겨지는 거 아닌가?
@@ -219,6 +219,9 @@
                    Assertion failed: _CrtIsValidHeapPointer(block) → exit code -1073741819
     ```
   - 리뷰: 누수는 전부 사라졌다. 남은 건 순서 하나. `delete[]`가 자기 대입 확인보다 앞에 있어서, `a = a`일 때 자기 판을 해제한 뒤 그대로 return한다. -572662307 = 0xDDDDDDDD는 디버그 힙이 "해제된 메모리"에 채우는 값. 그 뒤 소멸자가 같은 판을 또 해제해서 크래시.
+- 복사 대입 연산자 5차: `delete[] data;`를 자기 대입 확인 아래로 옮김
+  - 검사 프로그램: copy, assign, self, chain, empty, emptypush 여섯 개 모두 정상 동작, no leaks, exit code 0. main도 정상 종료.
+  - **2단계 완료.** 복사 생성자, 복사 대입 연산자, 소멸자를 모두 직접 만든 것 = **3의 법칙(Rule of Three)**: 셋 중 하나를 직접 만들어야 하는 클래스는 보통 셋 다 필요하다.
 
 ### MyVector 설계 결정
 
