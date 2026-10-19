@@ -23,6 +23,10 @@
 | MyVector 2단계: 복사 | 완료 (2026-10-19) |
 | MyVector 3단계: 템플릿, 이동 | 완료 (2026-10-19) |
 | MyVector 4단계: 테스트, 성능 비교 | 완료 (2026-10-19) |
+| 스마트 포인터 1: 직접 delete의 함정 | |
+| 스마트 포인터 2: unique_ptr | |
+| 스마트 포인터 3: shared_ptr | |
+| 스마트 포인터 4: weak_ptr | |
 
 ---
 
@@ -377,6 +381,14 @@
     복사 대입 얕은 복사      → Assertion failed: d[0] == 1, line 43
     ```
   - **테스트 완료. MyVector 완성.**
+
+### 스마트 포인터 1: 직접 delete의 함정 (2026-10-19, 진행 중)
+
+- 코드: `Spawn(bool bCancel)` 안에서 `Character* c = new Player();`, bCancel이면 delete 전에 return
+- 내 예측:
+  - Spawn(false): 소멸자에서 delete할 객체가 사라져서 댕글링 포인터가 발생?
+  - Spawn(true): 생성자 소멸자 텍스트가 실행되겠지
+- 실행 결과:
 
 ### MyVector 설계 결정
 
