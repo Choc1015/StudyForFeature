@@ -36,6 +36,9 @@ int main()
 	a.push_back(1);
 	MyVector b = a;
 
+	b[0] = 100;
+
+	cout << a[0] << ", " << b[0] << endl;
 
 	delete c;
 	delete nc;

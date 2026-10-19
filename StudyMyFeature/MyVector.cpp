@@ -16,6 +16,17 @@ MyVector::~MyVector()
 	delete[] data;
 }
 
+MyVector::MyVector(const MyVector& InVector)
+{
+	if (InVector.data == nullptr)
+		return;
+
+	for (int i = 0; i < InVector.size(); i++)
+	{
+		push_back(InVector.data[i]);
+	}
+}
+
 void MyVector::push_back(int InValue)
 {
 	if (capacityValue == 0)

@@ -10,6 +10,8 @@ private:
 public:
     MyVector();       // 처음 판 만들기 (미리 몇 칸 잡기로 했죠?)
     ~MyVector();      // 판 버리기
+    MyVector(const MyVector& InVector);
+
 
     int size() const { return sizeValue; }
     int capacity() const { return capacityValue; }
