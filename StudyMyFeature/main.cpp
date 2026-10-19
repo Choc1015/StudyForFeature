@@ -37,6 +37,7 @@ void TestCopyAssign()
 	assert(f[0] == 1);
 	assert(f[1] == 2);
 	assert(f[2] == 3);
+	f[0] = 100;
 
 	assert(d.size() == 3);
 	assert(d[0] == 1);
