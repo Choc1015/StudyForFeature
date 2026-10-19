@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include "MyUniquePtr.h"
 
 using namespace std;
 
@@ -80,12 +81,11 @@ void TestMoveAssign()
 
 void Spawn(bool bCancel)
 {
-	Character* c = new Player();   // ич
+	MyUniquePtr<Character> c(new Player());
 	if (bCancel)                   // иш
 	{
 		return;                    // ищ
 	}
-	delete c;                      // иъ
 }
 
 
@@ -95,6 +95,8 @@ int main()
 	Spawn(false);
 	cout << "---" << endl;
 	Spawn(true);
+		
+
 
 	return 0;
 }

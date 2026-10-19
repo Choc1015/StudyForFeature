@@ -398,6 +398,14 @@
   `---` 아래에 아무것도 없다. Spawn(true)의 Player는 소멸자가 불리지 않고 누수.
 - 리뷰: "자동으로 해제해 줄 줄 알았다"가 핵심. MyVector는 스택에 만든 객체라 함수가 끝나면 소멸자가 자동으로 불렸다. 포인터 변수 c는 함수가 끝나면 사라지지만, c가 가리키던 Player는 그대로 남는다. 이 "자동 해제"를 포인터에도 주려는 게 스마트 포인터.
 - 메모: main에서 MyVector 테스트 호출 네 줄이 빠져 있음. 다시 넣어 두는 게 좋다.
+- 질문: 포인터를 들고 있다가 자기가 사라질 때 delete해 주는 클래스를 만들면? → 내 답: 뭐 그렇겠지? → 직접 만들어 확인하기로 함
+- MyUniquePtr 1차: 멤버 `T SavePointer;`, 생성자에서 `SavePointer = *Tname;`, 소멸자 비어 있음
+  - 결과: `Character / --- / Character` (Player가 한 번도 안 나옴)
+  - 리뷰: 주소가 아니라 Player를 Character 모양으로 복사한 실물을 저장했다. 사라진 건 복사본이고 진짜 Player는 여전히 누수.
+  - 내 질문: 주소를 담는 타입은 T&가 아니었나? → T*는 주소를 담는 변수(nullptr 가능, delete 가능), T&는 이미 있는 객체의 별명(delete 불가). new가 돌려주는 건 포인터.
+- MyUniquePtr 2차: 멤버 `T*`, 주소 그대로 저장, 소멸자에서 `delete[] SavePointer;`
+  - 결과: `Player / Character / --- / Player / Character` ← return으로 일찍 나가도 해제됨
+  - 리뷰: 원하는 출력은 나왔지만 `new`(하나)로 만든 걸 `delete[]`(배열)로 해제하고 있다. 짝이 안 맞아 정의되지 않은 동작. 지금은 우연히 동작한 것.
 
 ### MyVector 설계 결정
 
