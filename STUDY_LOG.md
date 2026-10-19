@@ -291,6 +291,12 @@
     - 검사 프로그램: int, float, string, move, moveassign 다섯 개 모두 정상, no leaks. main `melon1, melon2, melon3, 0`.
   - **이동 대입 완료. 3단계 완료.** 소멸자, 복사 생성자, 복사 대입, 이동 생성자, 이동 대입을 모두 직접 만들었다 = **5의 법칙(Rule of Five)**.
 
+### MyVector 4단계: 성능 비교 (2026-10-19, 진행 중)
+
+- 질문: `std::vector<int>`와 `MyVector<int>`에 각각 push_back을 100만 번 하면 어느 쪽이 빠를까?
+  - 내 예측: 똑같지 않을까? 일부러 std의 원리대로 만들었는데, 그래도 빠르다면 STL의 vector가 빠르겠지. 잘 설계된 거니.
+  - 실행 결과:
+
 ### MyVector 설계 결정
 
 **처음 capacity: 0으로 시작할까, 미리 몇 칸 잡을까? (2026-10-18)**
