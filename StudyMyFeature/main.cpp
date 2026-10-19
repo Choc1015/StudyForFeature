@@ -30,8 +30,8 @@ int main()
 
 	auto end1 = std::chrono::steady_clock::now();
 
-	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	auto ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count();
+	auto ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+	auto ms1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1).count();
 	cout << ms << " ms vs " << ms1 << " ms1" << endl;
 
 

@@ -302,6 +302,10 @@
     Release : 1 ms vs 2 ms
     ```
   - 리뷰: Debug 빌드의 std::vector는 범위 검사, 반복자 검사 같은 디버그용 검사가 잔뜩 켜져 있고 함수도 펼쳐지지(인라인) 않는다. MyVector는 그런 검사가 거의 없다. 성능은 Release로 재야 의미가 있다. Release에서도 ms 단위는 너무 거칠어서 마이크로초로 다시 재 볼 것.
+  - Release + 마이크로초 (내 측정): 900 정도 더 빨라 (MyVector가)
+  - Claude 재측정 (Release, 5회, 마이크로초): MyVector 1817~1960 vs std::vector 2562~2974
+  - 다음 질문: 같은 원리인데 Release에서도 MyVector가 약 1.4배 빠른 이유는?
+    - 내 답:
 
 ### MyVector 설계 결정
 
