@@ -35,6 +35,11 @@ int main()
 	cout << cb[0] << endl;
 	cout << d[0] << ca[0] << endl;
 
+	MyVector<string> m1;
+	m1.push_back("melon");
+	MyVector<string> m2 = std::move(m1);
+	cout << m2[0] << ", " << m1.size() << endl;   // melon, 0 이 나와야 해요
+
 	delete c;
 	delete nc;
 

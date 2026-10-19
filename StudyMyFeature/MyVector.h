@@ -10,17 +10,17 @@ private:
 	int capacityValue;  // Q3: 판의 칸 수
 
 public:
-	MyVector<T>()
+	MyVector()
 	{
 		data = nullptr;
 		sizeValue = 0;
 		capacityValue = 0;
 	};       // 처음 판 만들기 (미리 몇 칸 잡기로 했죠?)
-	~MyVector<T>()
+	~MyVector()
 	{
 		delete[] data;
 	};      // 판 버리기
-	MyVector<T>(const MyVector& InVector)
+	MyVector(const MyVector& InVector)
 	{
 		if (InVector.capacityValue == 0)
 		{
@@ -43,6 +43,17 @@ public:
 		}
 
 	};
+	MyVector(MyVector&& InVector)
+	{
+		data = InVector.data;
+		sizeValue = InVector.sizeValue;
+		capacityValue = InVector.capacityValue;
+
+		InVector.data = nullptr;
+		InVector.sizeValue = 0;
+		InVector.capacityValue = 0;
+	}
+
 
 
 	int size() const { return sizeValue; }

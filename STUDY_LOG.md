@@ -254,6 +254,27 @@
     ```
   - **템플릿 완료.** 남은 3단계 과제: 이동.
 
+### MyVector 3단계: 이동 (2026-10-19, 진행 중)
+
+- 질문: 100만 개짜리 a를 다시 안 쓸 거라면, 판을 복사하지 않고 b에게 넘기려면?
+  - 내 답 1: 참조로 주면 되는 거 아니야? 대신 a를 바꾸면 b도 바뀌겠지? 비유하자면 계란판을 둘이서 잡고 있는 느낌?
+    - 리뷰: 둘이 같이 잡으면 얕은 복사와 같아서 이중 해제. 이동은 "건네주고 손 놓기".
+  - 내 답 2: 그냥 delete를 넘겨줬을 때 하면 되는 거 아닌가?
+    - 리뷰: delete는 판 자체를 없앤다. 판은 이제 b의 것이라 없애면 안 되고, a는 판의 주소만 잊으면 된다.
+  - 내 답 3: nullptr? → 정확. sizeValue, capacityValue는 0. 빈 벡터 상태.
+- 이동 생성자 `MyVector(MyVector&& InVector)`: InVector의 세 멤버를 그대로 받고, InVector를 nullptr/0/0으로. (생성자 이름에서 `<T>`도 정리함)
+  - main: `MyVector<string> m2 = std::move(m1);` → `melon, 0`
+  - 검사 프로그램:
+    ```
+    [move] same tray handed over: yes        ← 판을 새로 만들지 않고 그대로 넘김
+           m1: size 0, capacity 0, []
+           m2: size 3, capacity 4, [melon, kiwi, plum]
+           빈 벡터 이동 → size 0, capacity 0
+           이동한 뒤의 m1에 다시 push_back → [reuse]
+           no leaks
+    ```
+  - **이동 생성자 완료.**
+
 ### MyVector 설계 결정
 
 **처음 capacity: 0으로 시작할까, 미리 몇 칸 잡을까? (2026-10-18)**
