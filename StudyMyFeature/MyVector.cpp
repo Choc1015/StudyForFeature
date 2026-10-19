@@ -19,11 +19,22 @@ MyVector::~MyVector()
 MyVector::MyVector(const MyVector& InVector)
 {
 	if (InVector.data == nullptr)
+	{
+		data = nullptr;
+		sizeValue = 0;
+		capacityValue = 0;
 		return;
+	}
+	else
+	{
+		data = new int[InVector.capacityValue];
+		sizeValue = InVector.sizeValue;
+		capacityValue = InVector.capacityValue;
+	}
 
 	for (int i = 0; i < InVector.size(); i++)
 	{
-		push_back(InVector.data[i]);
+		data[i] = InVector.data[i];
 	}
 }
 

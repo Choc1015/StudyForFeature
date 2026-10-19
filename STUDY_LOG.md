@@ -156,6 +156,18 @@
                               delete b → exit code -1073741819 (접근 위반)
     ```
 - 내 질문: const를 꼭 써야 하나?
+  - 리뷰: 컴파일은 되지만 붙인다. (1) 원본을 실수로 바꾸면 컴파일러가 막아 준다. (2) const가 없으면 `const MyVector&`로 받은 벡터를 복사할 수 없다. 복사 생성자 매개변수는 사실상 `const MyVector&`로 정해져 있다.
+- 복사 생성자 2차: 원본이 비었으면 세 멤버를 nullptr/0/0으로, 아니면 원본 capacity만큼 판을 한 번에 만들고 size, capacity를 맞춘 뒤 for문으로 값 복사 (push_back 재사용 대신 한 번에 할당하는 방식으로 바꿈)
+  - 검사 프로그램:
+    ```
+    [1] a: data ...D550, size 3, capacity 4, [1, 2, 3]
+        b: data ...CAB0, size 3, capacity 4, [100, 2, 3]   ← 주소가 다르고, b만 바뀜
+        no leaks
+    [2] new MyVector(a) → b: size 3, capacity 4, [1, 2, 3]
+    [3] 빈 벡터 복사 → b: data 0000000000000000, size 0, capacity 0 → delete b ok
+    ```
+  - **복사 생성자 완료.** (검사 중 한 번 보인 16바이트 누수는 검사 프로그램 자신의 std::string 때문이었고, 고친 뒤 사라짐)
+- 다음: 복사 대입 연산자 (`b = a;`)
 
 ### MyVector 설계 결정
 
