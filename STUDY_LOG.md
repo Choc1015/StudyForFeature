@@ -189,6 +189,17 @@
     2. `return InVector;` → 함수가 끝나면 사라지는 매개변수의 참조를 돌려준다 (댕글링 참조). 돌려줘야 하는 건 나 자신.
     3. 매개변수를 `MyVector`(값)로 받아서 대입할 때마다 복사가 한 번 더 일어난다. 보통은 `const MyVector&`.
     4. 자기 대입 확인이 없다 (값으로 받으면 우연히 안전해지지만, `const MyVector&`로 바꾸면 필요).
+- 복사 대입 연산자 2차: 복사 생성자의 `delete[]` 삭제, 매개변수 `const MyVector&`, 맨 앞에 `if (this == &InVector) return *this;`, 끝에 `return *this;`
+  - 검사 프로그램:
+    ```
+    [copy]   b: 주소 다름, [1, 2, 3], no leaks
+    [assign] d: 주소 다름, [100, 2, 3] (a는 그대로), no leaks
+    [self]   a = a 후에도 [1, 2, 3], no leaks
+    [chain]  x = y = z → x [100, 4], y [3, 4], z [3, 4], 셋 다 주소 다름, no leaks
+    [empty]  d = 빈 a → size 0, capacity 0, no leaks
+    [emptypush] d = 빈 a 후 d.push_back(7) → Detected memory leaks! 0 bytes long
+    ```
+  - 리뷰: 네 가지 모두 정확히 고쳤다. 남은 건 경계 상황 하나. 빈 벡터를 대입받으면 `new int[0]`으로 0칸짜리 판을 만들어 data가 nullptr이 아니게 되고, 다음 push_back은 capacity가 0이라 그 판을 해제하지 않은 채 새 판을 만든다.
 
 ### MyVector 설계 결정
 

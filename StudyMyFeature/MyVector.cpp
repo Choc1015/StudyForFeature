@@ -26,10 +26,6 @@ MyVector::MyVector(const MyVector& InVector)
 		return;
 	}
 
-	if (data != nullptr)
-	{
-		delete[] data;
-	}
 
 	data = new int[InVector.capacityValue];
 	sizeValue = InVector.sizeValue;
@@ -83,8 +79,13 @@ int& MyVector::operator[](int Invalue)
 	return data[Invalue];
 }
 
-MyVector& MyVector::operator=(MyVector InVector)
+MyVector& MyVector::operator=(const MyVector &InVector)
 {
+	if (this == &InVector)
+	{
+		return *this;
+	}
+
 	if (data != nullptr)
 	{
 		delete[] data;
@@ -100,5 +101,5 @@ MyVector& MyVector::operator=(MyVector InVector)
 		data[i] = InVector.data[i];
 	}
 
-	return InVector;
+	return *this;
 }

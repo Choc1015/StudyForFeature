@@ -20,5 +20,5 @@ public:
 
     int &operator[](int Invalue);
 
-    MyVector& operator=(MyVector InVector);
+    MyVector& operator=(const MyVector& InVector);
 };
