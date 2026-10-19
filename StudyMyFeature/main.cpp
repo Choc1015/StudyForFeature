@@ -30,7 +30,9 @@ int main()
 
 	MyVector<string> ca;
 	ca.push_back("lemon");
-
+	MyVector<string> cb;
+	cb = ca;
+	cout << cb[0] << endl;
 	cout << d[0] << ca[0] << endl;
 
 	delete c;

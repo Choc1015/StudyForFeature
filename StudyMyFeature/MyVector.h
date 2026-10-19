@@ -106,7 +106,7 @@ public:
 		}
 		else
 		{
-			data = new int[InVector.capacityValue];
+			data = new T[InVector.capacityValue];
 			sizeValue = InVector.sizeValue;
 			capacityValue = InVector.capacityValue;
 		}

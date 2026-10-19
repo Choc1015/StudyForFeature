@@ -21,7 +21,7 @@
 | MyVector 0단계: 멤버 변수, 생성자, 소멸자 | 완료 (2026-10-18) |
 | MyVector 1단계: int 전용 | 완료 (2026-10-19) |
 | MyVector 2단계: 복사 | 완료 (2026-10-19) |
-| MyVector 3단계: 템플릿, 이동 | |
+| MyVector 3단계: 템플릿, 이동 | 템플릿 완료 (2026-10-19), 이동 남음 |
 | MyVector 4단계: 테스트, 성능 비교 | |
 
 ---
@@ -245,6 +245,14 @@
 - 3차: operator[] 번호를 int로 → 이어서 return을 `*T`로 바꿨다가 되돌림 (T는 타입 이름이라 변수처럼 쓸 수 없음) → assert 오타 `0 = <`, `Invale` 수정 → push_back의 `new int`, `int* temp`를 T로, sizeValue/capacityValue를 int로
   - 결과: `MyVector<string>`에 "lemon"을 넣고 `ca[0]` 출력 → `lemon`. 빌드 경고 없음, 정상 종료.
   - 남은 것: 대입 연산자 안의 `new int[...]` 한 곳. string 벡터끼리 대입을 아직 안 써서 에러가 안 날 뿐이다 (템플릿 함수는 실제로 쓰일 때만 만들어진다).
+- 4차: 대입 연산자의 `new int`를 `new T`로. main에 `cb = ca;` 추가 → `lemon` 출력.
+  - 검사 프로그램 (int, float, string 각각 push, 복사, 대입, 자기 대입):
+    ```
+    [int]    a [1, 2, 4, 4, 5], b 복사본 같음, d만 [100, ...], e = 빈 벡터 후 push → [7], no leaks
+    [float]  f [1.5, 2.5, 3.5], no leaks
+    [string] s 5개 (긴 문자열 포함, 1→2→4→8로 늘어남), t 복사본 같음, u만 [changed, ...], no leaks
+    ```
+  - **템플릿 완료.** 남은 3단계 과제: 이동.
 
 ### MyVector 설계 결정
 
