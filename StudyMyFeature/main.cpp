@@ -6,41 +6,29 @@
 
 using namespace std;
 
+void TestMoveAssign()
+{
+    MyVector<int> a;
+    a.push_back(1); a.push_back(2); a.push_back(3);
+    MyVector<int> b;
+    b = std::move(a);
+
+    assert(b.size() == 3);
+    assert(b[0] == 1);
+    assert(b[1] == 2);
+    assert(b[2] == 3);
+    assert(a.size() == 0);
+
+    return;
+}
+
 int main()
 {
-	MyVector<int> m2;
-	vector<int> m3;
 
-	auto start = std::chrono::steady_clock::now();
-	
-	for (int i = 0; i < 1000000; i++)
-	{
-		m2.push_back(i);
-
-	}
-
-	cout << m2.capacity() << " ";
-	cout << endl;
-
-	auto end = std::chrono::steady_clock::now();
-
-	
-	auto start1 = std::chrono::steady_clock::now();
-
-	for (int i = 0; i < 1000000; i++)
-	{
-		m3.push_back(i);
-	}
-	cout << m3.capacity() << " ";
-	cout << endl;
-
-	auto end1 = std::chrono::steady_clock::now();
-
-	auto ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-	auto ms1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1).count();
-	cout << ms << " ms vs " << ms1 << " ms1" << endl;
+    TestMoveAssign();
 
 
 
 	return 0;
 }
+
