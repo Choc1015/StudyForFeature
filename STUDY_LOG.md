@@ -355,6 +355,16 @@
     얕은 복사 버그,  Debug → Assertion failed: d[0] == 1, file main.cpp, line 40   ← 정확히 짚음
     ```
   - 리뷰: 이제 얕은 복사를 정확한 줄에서 잡는다. f[0] 문제는 테스트끼리 같은 변수(c)를 이어 써서 생긴 것. 앞 테스트가 c를 바꾸면 뒤 테스트의 기대값도 바뀐다. 테스트는 각자 자기 데이터를 새로 만들어 서로 독립이어야 한다.
+- 테스트를 기능별 함수 네 개로 분리 (TestCopyConstruct, TestCopyAssign, TestMoveConstruct, TestMoveAssign). 각자 자기 벡터를 새로 만듦.
+  - 내 말: 또 f[0] = 100으로 까먹고 빌드하니까 에러 나더라. 그래그래, 유용하게 몸으로 맞고 있네.
+  - 검증 (버그 세 가지 주입):
+    ```
+    진짜 코드                 → exit code 0
+    복사 생성자 얕은 복사     → Assertion failed: d[0] == 1, line 27
+    이동 대입 size 안 받음    → Assertion failed: b.size() == 3, line 65
+    복사 대입 얕은 복사       → exit code 3, assert 메시지 없음 (끝에서 이중 해제)
+    ```
+  - 리뷰: 둘은 정확히 잡는다. TestCopyAssign에는 복사본을 바꾼 뒤 원본을 확인하는 줄이 없어서, 복사 대입의 얕은 복사는 이름 붙여 잡지 못한다.
 
 ### MyVector 설계 결정
 
