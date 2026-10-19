@@ -295,7 +295,13 @@
 
 - 질문: `std::vector<int>`와 `MyVector<int>`에 각각 push_back을 100만 번 하면 어느 쪽이 빠를까?
   - 내 예측: 똑같지 않을까? 일부러 std의 원리대로 만들었는데, 그래도 빠르다면 STL의 vector가 빠르겠지. 잘 설계된 거니.
-  - 실행 결과:
+  - 실행 결과 (내 측정): 내가 만든 vector가 30ms 빠르다. 왜지?
+  - Claude 재측정 (각 3회, MyVector vs std::vector):
+    ```
+    Debug   : 4 ms vs 34 ms
+    Release : 1 ms vs 2 ms
+    ```
+  - 리뷰: Debug 빌드의 std::vector는 범위 검사, 반복자 검사 같은 디버그용 검사가 잔뜩 켜져 있고 함수도 펼쳐지지(인라인) 않는다. MyVector는 그런 검사가 거의 없다. 성능은 Release로 재야 의미가 있다. Release에서도 ms 단위는 너무 거칠어서 마이크로초로 다시 재 볼 것.
 
 ### MyVector 설계 결정
 
