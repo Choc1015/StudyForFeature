@@ -97,7 +97,7 @@ public:
 	{
 
 		assert(0 <= Invalue && sizeValue > Invalue);
-	
+
 		return data[Invalue];
 
 	}
@@ -136,14 +136,14 @@ public:
 		{
 			return *this;
 		}
-		if (InVector.capacityValue == 0)
-		{
-			data = nullptr;
-			sizeValue = 0;
-			capacityValue = 0;
-		}
-	
+
+		delete[] data;
+
+		sizeValue = InVector.sizeValue;
+		capacityValue = InVector.capacityValue;
+
 		data = InVector.data;
+
 
 		InVector.data = nullptr;
 		InVector.sizeValue = 0;
