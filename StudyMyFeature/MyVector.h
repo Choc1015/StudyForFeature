@@ -6,8 +6,8 @@ class MyVector
 {
 private:
 	T* data;      // Q1: 판 (메모리 위치)
-	T sizeValue;      // Q2: 계란 수
-	T capacityValue;  // Q3: 판의 칸 수
+	int sizeValue;      // Q2: 계란 수
+	int capacityValue;  // Q3: 판의 칸 수
 
 public:
 	MyVector<T>()
@@ -55,7 +55,7 @@ public:
 		{
 			capacityValue = 1;
 			sizeValue = 1;
-			data = new int[capacityValue];
+			data = new T[capacityValue];
 			data[sizeValue - 1] = InValue;
 
 			return;
@@ -63,10 +63,10 @@ public:
 
 		if (sizeValue == capacityValue)
 		{
-			int* temp = data;
+			T* temp = data;
 
 			capacityValue *= 2;
-			data = new int[capacityValue];
+			data = new T[capacityValue];
 			for (int i = 0; i < sizeValue; i++)
 			{
 				data[i] = temp[i];
@@ -80,16 +80,16 @@ public:
 		data[sizeValue - 1] = InValue;
 
 
-	};
+	}
 
-	T& operator[](T Invalue)
+	T& operator[](int Invalue)
 	{
-		assert(Invalue < sizeValue && Invalue >= 0);
 
-
+		assert(0 <= Invalue && sizeValue > Invalue);
+	
 		return data[Invalue];
 
-	};
+	}
 
 	MyVector& operator=(const MyVector& InVector)
 	{
@@ -117,5 +117,5 @@ public:
 		}
 
 		return *this;
-	};
+	}
 };

@@ -241,6 +241,10 @@
     MyVector.h(90): error C2677: 이항 '[': 'T' 형식을 사용하는 전역 연산자가 없거나 ... with [ T=std::string ]
     ```
   - 리뷰: 1차 리뷰의 2번, 3번이 아직 남아 있다. operator[]의 번호 매개변수가 T라서 "lemon" 벡터는 번호도 string이 된다. 이걸 고치면 sizeValue, capacityValue(T)와 new int 세 곳에서 다음 에러가 나올 것.
+- (여기서부터 한 번에 하나씩 고치기로 함)
+- 3차: operator[] 번호를 int로 → 이어서 return을 `*T`로 바꿨다가 되돌림 (T는 타입 이름이라 변수처럼 쓸 수 없음) → assert 오타 `0 = <`, `Invale` 수정 → push_back의 `new int`, `int* temp`를 T로, sizeValue/capacityValue를 int로
+  - 결과: `MyVector<string>`에 "lemon"을 넣고 `ca[0]` 출력 → `lemon`. 빌드 경고 없음, 정상 종료.
+  - 남은 것: 대입 연산자 안의 `new int[...]` 한 곳. string 벡터끼리 대입을 아직 안 써서 에러가 안 날 뿐이다 (템플릿 함수는 실제로 쓰일 때만 만들어진다).
 
 ### MyVector 설계 결정
 
