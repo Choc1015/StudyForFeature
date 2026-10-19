@@ -274,6 +274,17 @@
            no leaks
     ```
   - **이동 생성자 완료.**
+- 이동 대입 연산자 `MyVector& operator=(MyVector&& InVector) noexcept`
+  - 내 생각: 복사 대입 때 이중 해제랑 메모리 누수가 있었지. 여기도 마찬가지로 옮기고 이번에 delete 해 주면 될 거 같은데.
+  - 1차: `data = InVector.data;` 다음에 `delete[] InVector.data;` → 받은 판을 바로 지움. 지울 건 내 원래 판.
+  - 2차: delete 줄을 지우고 상대 비우기 3줄 추가. main은 `melon, 0`으로 맞게 나옴.
+    - 내 이해: 주소를 data에게 넘겨주고, InVector.data가 기억하고 있는 주소 공간은 비우는 거지?
+    - 검사 프로그램:
+      ```
+      m3{grape} = move(m2{melon, kiwi, plum}) → m3: size 1, capacity 1, [melon]   ← kiwi, plum이 안 보임
+      Detected memory leaks! (grape 판, 빈 벡터를 받을 때 버린 판)
+      ```
+    - 리뷰: (1) "주소 공간을 비운다"가 아니라 "주소를 잊는다". 메모리는 그대로 m3가 쓴다. (2) data만 받고 sizeValue, capacityValue를 안 받았다. main은 melon 하나라 우연히 맞아 보였다. (3) 내 원래 판 delete[]가 아직 없다.
 
 ### MyVector 설계 결정
 

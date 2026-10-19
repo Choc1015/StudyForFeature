@@ -43,7 +43,7 @@ public:
 		}
 
 	};
-	MyVector(MyVector&& InVector)
+	MyVector(MyVector&& InVector) noexcept
 	{
 		data = InVector.data;
 		sizeValue = InVector.sizeValue;
@@ -126,6 +126,28 @@ public:
 		{
 			data[i] = InVector.data[i];
 		}
+
+		return *this;
+	}
+
+	MyVector& operator=(MyVector&& InVector) noexcept
+	{
+		if (this == &InVector)
+		{
+			return *this;
+		}
+		if (InVector.capacityValue == 0)
+		{
+			data = nullptr;
+			sizeValue = 0;
+			capacityValue = 0;
+		}
+	
+		data = InVector.data;
+
+		InVector.data = nullptr;
+		InVector.sizeValue = 0;
+		InVector.capacityValue = 0;
 
 		return *this;
 	}
