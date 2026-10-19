@@ -223,6 +223,16 @@
   - 검사 프로그램: copy, assign, self, chain, empty, emptypush 여섯 개 모두 정상 동작, no leaks, exit code 0. main도 정상 종료.
   - **2단계 완료.** 복사 생성자, 복사 대입 연산자, 소멸자를 모두 직접 만든 것 = **3의 법칙(Rule of Three)**: 셋 중 하나를 직접 만들어야 하는 클래스는 보통 셋 다 필요하다.
 
+### MyVector 3단계: 템플릿 (2026-10-19, 진행 중)
+
+- 1차: `template <typename T>`를 붙이고 int를 T로 바꿈. main은 `MyVector<int>`로 바꿈.
+  - 내 질문: 이렇게 쓰는 게 아닌가?
+  - 빌드 결과: `error LNK2019: MyVector<int>::MyVector<int>(void) ... main 함수에서 참조되는 확인할 수 없는 외부 기호` (5개)
+  - 리뷰:
+    1. 링크 에러: 템플릿은 설계도라서, 실제 `MyVector<int>` 코드는 쓰는 곳(main.cpp)에서 함수 정의를 보고 만들어진다. 정의가 MyVector.cpp에만 있으면 main.cpp는 볼 수 없다.
+    2. 너무 많이 바꿨다: `sizeValue`, `capacityValue`, `size()`, `capacity()`, `operator[]`의 번호 매개변수까지 T가 됨. 개수와 번호는 담는 타입과 상관없이 정수다.
+    3. 덜 바꿨다: push_back과 대입 연산자 안의 `new int[...]` 세 곳이 그대로.
+
 ### MyVector 설계 결정
 
 **처음 capacity: 0으로 시작할까, 미리 몇 칸 잡을까? (2026-10-18)**

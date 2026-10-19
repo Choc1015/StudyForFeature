@@ -19,7 +19,7 @@ int main()
 	int cbit = sizeof(Character);
 	int ncbit = sizeof(noCharacter);
 
-	MyVector v;
+	MyVector<int> v;
 
 	cout << v.size() << ", " << v.capacity() << endl;
 
@@ -32,10 +32,10 @@ int main()
 
 	cout << v[3] << ", " << v[1] << endl;
 
-	MyVector a;
+	MyVector<int> a;
 	a.push_back(1);
 	
-	MyVector d;   // 복사 생성자: b가 지금 막 태어남 (빈 상태에서 시작)
+	MyVector<int> d;   // 복사 생성자: b가 지금 막 태어남 (빈 상태에서 시작)
 	d.push_back(9);
 	d = a;            // 복사 대입: b는 이미 살아 있고, 자기 판도 가지고 있음
 

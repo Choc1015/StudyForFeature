@@ -2,7 +2,8 @@
 #include <cassert>
 
 
-MyVector::MyVector()
+template <typename T>
+MyVector<T>::MyVector()
 {
 	data = nullptr;
 	sizeValue = 0;
@@ -11,12 +12,14 @@ MyVector::MyVector()
 
 }
 
-MyVector::~MyVector()
+template <typename T>
+MyVector<T>::~MyVector()
 {
 	delete[] data;
 }
 
-MyVector::MyVector(const MyVector& InVector)
+template <typename T>
+MyVector<T>::MyVector(const MyVector& InVector)
 {
 	if (InVector.capacityValue == 0)
 	{
@@ -28,7 +31,7 @@ MyVector::MyVector(const MyVector& InVector)
 	}
 
 
-	data = new int[InVector.capacityValue];
+	data = new T[InVector.capacityValue];
 	sizeValue = InVector.sizeValue;
 	capacityValue = InVector.capacityValue;
 
@@ -39,7 +42,8 @@ MyVector::MyVector(const MyVector& InVector)
 	}
 }
 
-void MyVector::push_back(int InValue)
+template <typename T>
+void MyVector<T>::push_back(T InValue)
 {
 	if (capacityValue == 0)
 	{
@@ -71,8 +75,8 @@ void MyVector::push_back(int InValue)
 
 
 }
-
-int& MyVector::operator[](int Invalue)
+template <typename T>
+T& MyVector<T>::operator[](T Invalue)
 {
 	assert(Invalue < sizeValue && Invalue >= 0);
 
@@ -80,7 +84,8 @@ int& MyVector::operator[](int Invalue)
 	return data[Invalue];
 }
 
-MyVector& MyVector::operator=(const MyVector& InVector)
+template <typename T>
+MyVector<T>& MyVector<T>::operator=(const MyVector& InVector)
 {
 	
 	if (this == &InVector)
