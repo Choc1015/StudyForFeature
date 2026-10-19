@@ -200,6 +200,17 @@
     [emptypush] d = 빈 a 후 d.push_back(7) → Detected memory leaks! 0 bytes long
     ```
   - 리뷰: 네 가지 모두 정확히 고쳤다. 남은 건 경계 상황 하나. 빈 벡터를 대입받으면 `new int[0]`으로 0칸짜리 판을 만들어 data가 nullptr이 아니게 되고, 다음 push_back은 capacity가 0이라 그 판을 해제하지 않은 채 새 판을 만든다.
+- 내 질문: 복사 생성자에 capacity가 0이라면으로 조건을 고치면 되지 않나? / 복사 생성자 쪽에서 delete 해 줘야 되나?
+  - 리뷰: 누수는 대입 연산자에서 생긴다. 복사 생성자는 갓 태어난 객체라 해제할 판이 없으므로 delete하면 안 된다. 다만 `capacityValue == 0` 조건은 더 튼튼해서 써도 좋다.
+- 복사 대입 연산자 3차: 복사 생성자 조건을 `InVector.capacityValue == 0`으로 바꿈. 대입 연산자의 해제 조건을 `if (data != nullptr)`에서 `if (InVector.capacityValue == 0)`으로 바꿈
+  - 검사 프로그램:
+    ```
+    [assign]    Detected memory leaks! 4 bytes, Data: 09 00 00 00          ← d의 원래 판 [9]
+    [chain]     Detected memory leaks! 4 bytes (02), 4 bytes (01)         ← y의 [2], x의 [1]
+    [emptypush] Detected memory leaks! 0 bytes                             ← 그대로
+    (copy, self, empty는 통과)
+    ```
+  - 리뷰: 해제 조건이 "원본이 비었을 때만"이 되어서, 원본에 값이 있는 보통의 대입에서 원래 판을 해제하지 않는다. 원래 판 해제는 원본이 비었든 아니든 항상 해야 한다. 원본이 비었을 때 할 일은 해제가 아니라 `new int[0]` 대신 nullptr/0/0으로 만드는 것.
 
 ### MyVector 설계 결정
 

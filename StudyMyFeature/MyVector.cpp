@@ -18,11 +18,12 @@ MyVector::~MyVector()
 
 MyVector::MyVector(const MyVector& InVector)
 {
-	if (InVector.data == nullptr)
+	if (InVector.capacityValue == 0)
 	{
 		data = nullptr;
 		sizeValue = 0;
 		capacityValue = 0;
+
 		return;
 	}
 
@@ -79,14 +80,14 @@ int& MyVector::operator[](int Invalue)
 	return data[Invalue];
 }
 
-MyVector& MyVector::operator=(const MyVector &InVector)
+MyVector& MyVector::operator=(const MyVector& InVector)
 {
 	if (this == &InVector)
 	{
 		return *this;
 	}
 
-	if (data != nullptr)
+	if (InVector.capacityValue == 0)
 	{
 		delete[] data;
 	}
