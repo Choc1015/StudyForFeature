@@ -13,12 +13,13 @@ int main()
 
 	auto start = std::chrono::steady_clock::now();
 	
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 1000000; i++)
 	{
 		m2.push_back(i);
 
-		cout << m2.capacity() << " ";
 	}
+
+	cout << m2.capacity() << " ";
 	cout << endl;
 
 	auto end = std::chrono::steady_clock::now();
@@ -26,11 +27,11 @@ int main()
 	
 	auto start1 = std::chrono::steady_clock::now();
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 1000000; i++)
 	{
 		m3.push_back(i);
-		cout << m3.capacity() << " ";
 	}
+	cout << m3.capacity() << " ";
 	cout << endl;
 
 	auto end1 = std::chrono::steady_clock::now();
