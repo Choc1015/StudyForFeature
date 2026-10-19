@@ -34,11 +34,10 @@ int main()
 
 	MyVector a;
 	a.push_back(1);
-	MyVector b = a;
-
-	b[0] = 100;
-
-	cout << a[0] << ", " << b[0] << endl;
+	
+	MyVector d;   // 복사 생성자: b가 지금 막 태어남 (빈 상태에서 시작)
+	d.push_back(9);
+	d = a;            // 복사 대입: b는 이미 살아 있고, 자기 판도 가지고 있음
 
 	delete c;
 	delete nc;

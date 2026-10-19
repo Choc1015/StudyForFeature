@@ -25,12 +25,12 @@ MyVector::MyVector(const MyVector& InVector)
 		capacityValue = 0;
 		return;
 	}
-	else
-	{
-		data = new int[InVector.capacityValue];
-		sizeValue = InVector.sizeValue;
-		capacityValue = InVector.capacityValue;
-	}
+
+
+	data = new int[InVector.capacityValue];
+	sizeValue = InVector.sizeValue;
+	capacityValue = InVector.capacityValue;
+
 
 	for (int i = 0; i < InVector.size(); i++)
 	{
@@ -71,10 +71,10 @@ void MyVector::push_back(int InValue)
 
 }
 
-int &MyVector::operator[](int Invalue)
+int& MyVector::operator[](int Invalue)
 {
-	assert(Invalue < sizeValue && Invalue >=0);
-	
+	assert(Invalue < sizeValue && Invalue >= 0);
+
 
 	return data[Invalue];
 }
