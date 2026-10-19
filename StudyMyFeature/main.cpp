@@ -36,11 +36,14 @@ void TestMoveAssign()
     assert(d[1] == 2);
     assert(d[2] == 3);
 
+    c[0] = 100;
+    assert(d[0] == 1);
+
     MyVector<int> f;
     f = c;
     // 복사 대입
     assert(f.size() == 3);
-    assert(f[0] == 1);
+    assert(f[0] == 100);
     assert(f[1] == 2);
     assert(f[2] == 3);
 
