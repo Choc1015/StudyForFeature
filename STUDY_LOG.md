@@ -423,6 +423,15 @@
     "끝"은 출력되지 않음
     ```
   - 리뷰: 예측대로. 순서는 b가 먼저 해제 → a는 댕글링 포인터 → a가 다시 delete하면서 이중 해제로 크래시.
+- 질문: 주인이 하나뿐이어야 하는데, 복사는 어떻게 처리할까?
+  - 내 답: 복사를 못 하게 해야 하는 거 아닌가? → 정확 (std::unique_ptr도 복사 금지)
+- 복사 생성자와 복사 대입 연산자를 `= delete`로 선언
+  - 검증 (복사를 시도하는 별도 파일을 컴파일):
+    ```
+    MyUniquePtr<Character> b = a;  → error C2280: ...MyUniquePtr(const MyUniquePtr<Character> &)': attempting to reference a deleted function
+    c = a;                         → error C2280: ...operator =(const MyUniquePtr<Character> &)': attempting to reference a deleted function
+    ```
+  - 리뷰: 실행 중에 터지던 이중 해제가 이제 빌드할 때 에러로 잡힌다. (사소한 것: 대입 연산자 반환 타입은 관례상 `MyUniquePtr&`이지만, 지운 함수라 동작에는 영향 없음)
 
 ### MyVector 설계 결정
 

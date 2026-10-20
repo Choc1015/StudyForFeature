@@ -98,7 +98,7 @@ int main()
 		
 	{
 		MyUniquePtr<Character> a(new Player());
-		MyUniquePtr<Character> b = a;
+		MyUniquePtr<Character> b(new Player());
 	}
 	cout << "³¡" << endl;
 
