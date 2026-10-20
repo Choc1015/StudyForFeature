@@ -436,6 +436,16 @@
 - 이동 생성자: `SavePointer = Other.SavePointer; Other.SavePointer = nullptr;`
   - 결과: `1` (a는 nullptr) / `Player` / `Character` (딱 한 번) / `끝`, 정상 종료
   - 리뷰: 한 번에 맞음. 주인이 a에서 b로 바뀌고, a의 소멸자는 nullptr을 delete하니 아무 일도 없다.
+- 이동 대입: `delete SavePointer;` → 받기 → 상대 비우기 → `return *this;`
+  - 결과: `Player / Character / 대입 끝 / Player / Character / 끝`, 정상 종료
+  - 검사 (자기 이동 `a = std::move(a);`):
+    ```
+    before: a holds a Player
+    Player
+    Character                                  ← 대입하는 도중에 Player가 해제됨
+    after a = std::move(a): a holds nothing    ← a가 빈손이 됨
+    ```
+  - 리뷰: 보통의 이동 대입은 성공 기준을 모두 만족. 다만 자기 대입 확인이 빠져서, 자기 자신에게 이동하면 자기 Player를 delete하고 빈손이 된다.
 
 ### MyVector 설계 결정
 

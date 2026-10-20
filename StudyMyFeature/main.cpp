@@ -95,8 +95,9 @@ int main()
 	
 	{
 		MyUniquePtr<Character> a(new Player());
-		MyUniquePtr<Character> b = std::move(a);
-		cout << (a.SavePointer == nullptr) << endl;   // 1이 나와야 해요
+		MyUniquePtr<Character> b(new Player());
+		b = std::move(a);
+		cout << "대입 끝" << endl;
 	}
 	cout << "끝" << endl;
 

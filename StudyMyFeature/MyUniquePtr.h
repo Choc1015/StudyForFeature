@@ -21,6 +21,14 @@ public:
 		Other.SavePointer = nullptr;
 	}
 
+	MyUniquePtr& operator=(MyUniquePtr&& Other)
+	{
+		delete SavePointer;
+		SavePointer = Other.SavePointer;
+		Other.SavePointer = nullptr;
+
+		return *this;
+	}
 
 	
 	virtual ~MyUniquePtr()
