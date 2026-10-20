@@ -23,7 +23,7 @@ public:
 
 	MyUniquePtr& operator=(MyUniquePtr&& Other)
 	{
-		if (Other.SavePointer == SavePointer)
+		if (this == &Other)
 		{
 			return *this;
 		}
