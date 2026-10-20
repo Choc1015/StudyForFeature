@@ -450,6 +450,19 @@
   - 검사: `after a = std::move(a): a holds a Player`, 마지막에 한 번만 해제. main도 정상 종료.
   - 리뷰: 동작은 맞다. 다만 이건 "같은 Player를 들고 있나"를 비교한 것이고, MyVector에서 쓴 `this == &Other`는 "같은 객체인가"를 비교한 것. unique_ptr은 같은 Player를 두 객체가 들 수 없으니 결과는 같지만, 뜻을 정확히 드러내는 건 `this == &Other`.
 - **스마트 포인터 2 완료.** MyUniquePtr: 소멸자에서 delete, 복사 금지, 이동 생성, 이동 대입 = `std::unique_ptr`의 핵심 구조.
+- 빈 종이에서 다시 쓰기 (MyUnique1.h, 원본을 보지 않고 15분)
+  - 검사:
+    ```
+    복사 생성 시도   → error C2280 (막힘) ✅
+    복사 대입 시도   → error C2280 (막힘) ✅
+    일찍 return      → Player / Character 해제 ✅
+    이동 생성        → a empty: 1, 한 번만 해제 ✅
+    이동 대입        → 원래 것 해제 후 받은 것 해제 ✅
+    자기 이동        → a holds a Player ✅  (이번엔 this == &Other로 씀)
+    이어서 이동 대입 c = (b = std::move(a)) → c holds nothing ❌
+    빌드 경고: MyUnique1.h(39): warning C4715: 'operator=': not all control paths return a value
+    ```
+  - 리뷰: 다섯 가지 체크리스트를 원본 없이 전부 해냈다. 자기 대입 확인은 원본보다 더 정확한 `this == &Other`. 빠진 건 이동 대입 끝의 `return *this;` 한 줄. 반환값이 없으면 받은 쪽이 엉뚱한 객체를 쓰게 되어, 이어서 대입하면 c가 빈손이 된다.
 
 ### MyVector 설계 결정
 

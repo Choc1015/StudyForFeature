@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
-#include "MyUniquePtr.h"
+#include "MyUnique1.h"
 
 using namespace std;
 
@@ -81,7 +81,7 @@ void TestMoveAssign()
 
 void Spawn(bool bCancel)
 {
-	MyUniquePtr<Character> c(new Player());
+	MyUnique1<Character> c(new Player());
 	if (bCancel)                   // ¨è
 	{
 		return;                    // ¨é
@@ -94,8 +94,8 @@ int main()
 
 	
 	{
-		MyUniquePtr<Character> a(new Player());
-		MyUniquePtr<Character> b(new Player());
+		MyUnique1<Character> a(new Player());
+		MyUnique1<Character> b(new Player());
 		b = std::move(a);
 		cout << "´ëÀÔ ³¡" << endl;
 	}
