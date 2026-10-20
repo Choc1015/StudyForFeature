@@ -432,6 +432,10 @@
     c = a;                         → error C2280: ...operator =(const MyUniquePtr<Character> &)': attempting to reference a deleted function
     ```
   - 리뷰: 실행 중에 터지던 이중 해제가 이제 빌드할 때 에러로 잡힌다. (사소한 것: 대입 연산자 반환 타입은 관례상 `MyUniquePtr&`이지만, 지운 함수라 동작에는 영향 없음)
+- 질문: 복사는 막았는데, 주인을 바꾸고 싶을 때는? → 내 답: 이동 생성자랑 이동 대입을 쓰면 되나? → 정확
+- 이동 생성자: `SavePointer = Other.SavePointer; Other.SavePointer = nullptr;`
+  - 결과: `1` (a는 nullptr) / `Player` / `Character` (딱 한 번) / `끝`, 정상 종료
+  - 리뷰: 한 번에 맞음. 주인이 a에서 b로 바뀌고, a의 소멸자는 nullptr을 delete하니 아무 일도 없다.
 
 ### MyVector 설계 결정
 

@@ -11,10 +11,17 @@ public:
 		SavePointer = Tname;
 	}
 	
-	MyUniquePtr(const MyUniquePtr& Same) = delete;
+	MyUniquePtr(const MyUniquePtr& Other) = delete;
 
-	void operator=(const MyUniquePtr& Same) = delete;
+	void operator=(const MyUniquePtr& Other) = delete;
 	
+	MyUniquePtr(MyUniquePtr&& Other)
+	{
+		SavePointer = Other.SavePointer;
+		Other.SavePointer = nullptr;
+	}
+
+
 	
 	virtual ~MyUniquePtr()
 	{

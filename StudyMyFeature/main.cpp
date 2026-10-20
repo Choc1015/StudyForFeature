@@ -92,13 +92,11 @@ void Spawn(bool bCancel)
 int main()
 {
 
-	Spawn(false);
-	cout << "---" << endl;
-	Spawn(true);
-		
+	
 	{
 		MyUniquePtr<Character> a(new Player());
-		MyUniquePtr<Character> b(new Player());
+		MyUniquePtr<Character> b = std::move(a);
+		cout << (a.SavePointer == nullptr) << endl;   // 1이 나와야 해요
 	}
 	cout << "끝" << endl;
 
