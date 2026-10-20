@@ -409,6 +409,13 @@
 - MyUniquePtr 3차: `delete[]` → `delete`. 결과 동일, 정상 종료.
 - **스마트 포인터 1 완료.**
 
+### 스마트 포인터 2: unique_ptr (2026-10-20, 진행 중)
+
+- 실험: 복사 생성자 없는 MyUniquePtr를 복사하면? `MyUniquePtr<Character> a(new Player()); MyUniquePtr<Character> b = a;`
+  - 내 예측 1: 흠, 주소가 복사되지 않을까? → 맞음
+  - 내 예측 2 (중괄호가 끝날 때): 이중 해제로 댕글링 포인터 발생
+  - 실행 결과:
+
 ### MyVector 설계 결정
 
 **처음 capacity: 0으로 시작할까, 미리 몇 칸 잡을까? (2026-10-18)**
