@@ -36,6 +36,8 @@ class MyUnique1
 			SavePointer = Other.SavePointer;
 			Other.SavePointer = nullptr;
 
+			return *this;
+
 		}
 
 

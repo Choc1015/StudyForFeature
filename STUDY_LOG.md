@@ -463,6 +463,12 @@
     빌드 경고: MyUnique1.h(39): warning C4715: 'operator=': not all control paths return a value
     ```
   - 리뷰: 다섯 가지 체크리스트를 원본 없이 전부 해냈다. 자기 대입 확인은 원본보다 더 정확한 `this == &Other`. 빠진 건 이동 대입 끝의 `return *this;` 한 줄. 반환값이 없으면 받은 쪽이 엉뚱한 객체를 쓰게 되어, 이어서 대입하면 c가 빈손이 된다.
+  - 수정: `return *this;` 추가 → 경고 사라짐, `c holds a Player`, 일곱 가지 검사 모두 통과.
+
+### 스마트 포인터 3: shared_ptr (2026-10-20, 진행 중)
+
+- 질문: 주인이 여럿인 포인터. 마지막 주인만 delete하려면 "몇 명이 쓰고 있는지" 세는 숫자가 필요하다. 그 숫자는 어디에 둬야 할까?
+  - 내 답:
 
 ### MyVector 설계 결정
 
