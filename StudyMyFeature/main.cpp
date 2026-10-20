@@ -96,7 +96,11 @@ int main()
 	cout << "---" << endl;
 	Spawn(true);
 		
-
+	{
+		MyUniquePtr<Character> a(new Player());
+		MyUniquePtr<Character> b = a;
+	}
+	cout << "³¡" << endl;
 
 	return 0;
 }

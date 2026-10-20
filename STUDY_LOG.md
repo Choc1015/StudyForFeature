@@ -414,7 +414,15 @@
 - 실험: 복사 생성자 없는 MyUniquePtr를 복사하면? `MyUniquePtr<Character> a(new Player()); MyUniquePtr<Character> b = a;`
   - 내 예측 1: 흠, 주소가 복사되지 않을까? → 맞음
   - 내 예측 2 (중괄호가 끝날 때): 이중 해제로 댕글링 포인터 발생
-  - 실행 결과:
+  - 내 관찰: 실행했더니 소멸자 두 번 나왔으
+  - Claude 재실행:
+    ```
+    Player / Character / --- / Player / Character     ← Spawn 실험
+    Player / Character                                ← b의 소멸자가 delete (정상)
+    (여기서 크래시, exit code -1073741819)            ← a의 소멸자가 같은 주소를 또 delete
+    "끝"은 출력되지 않음
+    ```
+  - 리뷰: 예측대로. 순서는 b가 먼저 해제 → a는 댕글링 포인터 → a가 다시 delete하면서 이중 해제로 크래시.
 
 ### MyVector 설계 결정
 
