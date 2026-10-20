@@ -23,6 +23,11 @@ public:
 
 	MyUniquePtr& operator=(MyUniquePtr&& Other)
 	{
+		if (Other.SavePointer == SavePointer)
+		{
+			return *this;
+		}
+
 		delete SavePointer;
 		SavePointer = Other.SavePointer;
 		Other.SavePointer = nullptr;

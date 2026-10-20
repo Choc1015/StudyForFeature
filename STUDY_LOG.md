@@ -24,7 +24,7 @@
 | MyVector 3단계: 템플릿, 이동 | 완료 (2026-10-19) |
 | MyVector 4단계: 테스트, 성능 비교 | 완료 (2026-10-19) |
 | 스마트 포인터 1: 직접 delete의 함정 | 완료 (2026-10-20) |
-| 스마트 포인터 2: unique_ptr | |
+| 스마트 포인터 2: unique_ptr | 완료 (2026-10-20) |
 | 스마트 포인터 3: shared_ptr | |
 | 스마트 포인터 4: weak_ptr | |
 
@@ -409,7 +409,7 @@
 - MyUniquePtr 3차: `delete[]` → `delete`. 결과 동일, 정상 종료.
 - **스마트 포인터 1 완료.**
 
-### 스마트 포인터 2: unique_ptr (2026-10-20, 진행 중)
+### 스마트 포인터 2: unique_ptr (2026-10-20)
 
 - 실험: 복사 생성자 없는 MyUniquePtr를 복사하면? `MyUniquePtr<Character> a(new Player()); MyUniquePtr<Character> b = a;`
   - 내 예측 1: 흠, 주소가 복사되지 않을까? → 맞음
@@ -446,6 +446,10 @@
     after a = std::move(a): a holds nothing    ← a가 빈손이 됨
     ```
   - 리뷰: 보통의 이동 대입은 성공 기준을 모두 만족. 다만 자기 대입 확인이 빠져서, 자기 자신에게 이동하면 자기 Player를 delete하고 빈손이 된다.
+- 자기 이동 확인 추가: `if (Other.SavePointer == SavePointer) return *this;`
+  - 검사: `after a = std::move(a): a holds a Player`, 마지막에 한 번만 해제. main도 정상 종료.
+  - 리뷰: 동작은 맞다. 다만 이건 "같은 Player를 들고 있나"를 비교한 것이고, MyVector에서 쓴 `this == &Other`는 "같은 객체인가"를 비교한 것. unique_ptr은 같은 Player를 두 객체가 들 수 없으니 결과는 같지만, 뜻을 정확히 드러내는 건 `this == &Other`.
+- **스마트 포인터 2 완료.** MyUniquePtr: 소멸자에서 delete, 복사 금지, 이동 생성, 이동 대입 = `std::unique_ptr`의 핵심 구조.
 
 ### MyVector 설계 결정
 
