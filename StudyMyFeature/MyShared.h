@@ -62,8 +62,11 @@ public:
 	{
 		ControlNum = Other.ControlNum;
 		Data = Other.Data;
-		ControlNum->Strong++;
 
+		if (ControlNum != nullptr)
+		{
+			ControlNum->Strong++;
+		}
 
 
 	}
@@ -89,7 +92,11 @@ public:
 
 		Data = Other.Data;
 		ControlNum = Other.ControlNum;
-		ControlNum->Strong++;
+
+		if (ControlNum != nullptr)
+		{
+			ControlNum->Strong++;
+		}
 
 
 

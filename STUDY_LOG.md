@@ -571,6 +571,10 @@
 - Lock 1단계: 빈 MyShared — `MyShared()`에서 Data, ControlNum을 nullptr로, 소멸자에서 ControlNum이 nullptr이면 바로 return
   - 검사: 빈 MyShared 혼자 → 정상 ✅ / 빈 MyShared를 복사 → exit code -1073741819 (크래시) ❌
   - 남은 것: 복사 생성자가 빈 상대를 받을 때 `ControlNum->Strong++`에서 nullptr를 건드림. 복사 대입도 같은 처리 필요.
+- Lock 2단계: 빈 상대를 받을 때 `if (ControlNum != nullptr) ControlNum->Strong++;`
+  - 처음엔 복사 대입(operator=)의 받는 부분에 넣음 → 복사 생성자는 여전히 크래시. 받는 코드 모양이 같아서 헷갈림 (끝에 `return *this;`가 있으면 대입).
+  - 복사 생성자에도 넣음 → 빈 MyShared 복사 ok ✅, 누수 검사 no leaks ✅
+  - 남은 것: 복사 대입에서 "내가" 빈 MyShared일 때 (`e = a;`) 앞부분의 놓기가 `ControlNum->Strong--`로 nullptr를 건드림.
 
 ### MyVector 설계 결정
 
