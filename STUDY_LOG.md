@@ -548,6 +548,9 @@
 - 복사 대입도 `ControlNum = Other.ControlNum;`으로 수정, 복사 생성자의 필요 없는 줄 정리
   - 검사: c = a → 대입 순간 P2 해제, count 2, 끝에서 P1 해제 ✅ / a = a → count 1 ✅
   - 남은 것: strong과 weak가 모두 0일 때 ControlBlock을 delete하는 코드 (지금은 덩어리가 누수)
+- 소멸자와 복사 대입의 "놓기"에 `if (Weak == 0) delete ControlNum;` 추가
+  - 검사 (복사 생성, 복사 대입, 자기 대입 + 디버그 힙 누수 검사): Player 두 번 해제, `no leaks` ✅
+  - **ControlBlock 버전 MyShared 완료.** 다음은 MyWeak.
 
 ### MyVector 설계 결정
 

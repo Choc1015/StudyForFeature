@@ -40,6 +40,10 @@ public:
 		if (ControlNum->Strong == 0)
 		{
 			delete Data;
+			if (ControlNum->Weak == 0)
+			{
+				delete ControlNum;
+			}
 		}
 
 
@@ -67,6 +71,10 @@ public:
 		if (ControlNum->Strong == 0)
 		{
 			delete Data;
+			if (ControlNum->Weak == 0)
+			{
+				delete ControlNum;
+			}
 		}
 
 
