@@ -91,17 +91,19 @@ void TestMoveAssign()
 
 int main()
 {
+	MyWeak<Character>* w = nullptr;
 	{
-		MyWeak<Character>* w = nullptr;
+		MyShared<Character> s(new Player());
+		w = new MyWeak<Character>(s);
 		{
-			MyShared<Character> s(new Player());
-			w = new MyWeak<Character>(s);
-			cout << "strong " << s.ControlNum->Strong << ", weak " << s.ControlNum->Weak << endl;   // 1, 1
+			MyShared<Character> borrowed = w->Lock();
+			cout << "빌리는 중 strong: " << s.ControlNum->Strong << endl;   // 2
 		}
-		cout << "s 놓음" << endl;
-		cout << "Expired: " << w->Expired() << endl;   // 진짜 weak면 1이 나와야 함   // 이 앞에 Player / Character
-		delete w;                        // 덩어리는 여기서 삭제되어야 해요
+		cout << "다 씀 strong: " << s.ControlNum->Strong << endl;          // 1
 	}
+	MyShared<Character> late = w->Lock();
+	cout << "죽은 뒤 Lock: " << (late.ControlNum == nullptr) << endl;     // 1 (빈 것)
+	delete w;
 	cout << "끝" << endl;
 
 	return 0;

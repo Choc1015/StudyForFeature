@@ -579,6 +579,15 @@
   - 1차: `Strong--` 한 줄만 감쌈 → 다음 줄 `if (ControlNum->Strong == 0)`에서 nullptr를 읽어 크래시. 바꾸는 것뿐 아니라 읽는 것도 안 된다.
   - 2차: 놓기 블록 전체를 감쌈
   - 검사: `e = a` → strong 2 / `a = empty` → e strong 1, a 비어 있음 / `empty = empty` → ok / no leaks ✅
+- Lock 4단계: `MyShared<T> Lock()` — Expired면 빈 MyShared, 아니면 `MyShared<T> emptyShared = new T();` 후 Strong++, Data와 ControlNum을 덮어씀
+  - main: `빌리는 중 strong: 2 / 다 씀 strong: 1 / Player / Character / 죽은 뒤 Lock: 1 / 끝` ✅
+  - 누수 검사:
+    ```
+    Detected memory leaks!
+    8 bytes, Data: 01 00 00 00 00 00 00 00   ← ControlBlock (Strong 1, Weak 0)
+    8 bytes, Data: 90 45 2C 33 F7 7F 00 00   ← Character 객체 (8바이트 = vptr, 실험 3에서 본 크기)
+    ```
+  - 리뷰: `new T()`가 쓰지도 않을 Character를 하나 새로 만들고, 그 생성자가 ControlBlock도 하나 만든다. 바로 다음 줄에서 Data와 ControlNum을 덮어써서 둘 다 잃어버린다 (MyVector 1단계 temp 누수와 같은 모양). 빈 MyShared로 시작하면 된다.
 
 ### MyVector 설계 결정
 

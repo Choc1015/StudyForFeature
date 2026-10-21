@@ -91,7 +91,7 @@ public:
 			}
 		}
 
-		
+
 
 
 
@@ -148,6 +148,26 @@ public:
 
 		return false;
 	}
+
+	MyShared<T> Lock()
+	{
+		if (this->Expired())
+		{
+			MyShared<T> emptyShared;
+			return emptyShared;
+		}
+		else
+		{
+			MyShared<T> emptyShared = new T();
+			ControlNum->Strong++;
+			emptyShared.Data = Data;
+			emptyShared.ControlNum = ControlNum;
+
+			return emptyShared;
+		}
+	}
+
+
 private:
 
 };
