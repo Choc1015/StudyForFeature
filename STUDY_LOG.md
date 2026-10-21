@@ -513,6 +513,19 @@
     ```
   - **스마트 포인터 3 완료.** MyShared: 숫자를 객체 밖에(new int), 복사하면 +1, 놓으면 -1, 0일 때만 해제 = `std::shared_ptr`의 참조 카운팅.
 
+### 스마트 포인터 4: weak_ptr (2026-10-21, 진행 중)
+
+- 데모: Player는 `shared_ptr<Guild> MyGuild`, Guild는 `shared_ptr<Player> Leader`를 가짐
+  ```
+  1. Player -> Guild만       → player 1, guild 2 → [Player deleted] [Guild deleted]
+  2. 서로 가리킴              → player 2, guild 2 → 아무것도 해제 안 됨
+  ```
+- 내 질문: p랑 g는 어떻게 선언된 거야? → 전체 코드와 그림으로 다시 봄 (p, g는 지역 변수, MyGuild와 Leader는 객체 안의 멤버)
+- 1번 따라가기 (내 설명): myguild가 원래 가지고 있던 주소와 카운트를 놓아주고 길드 카운트가 1이 되고, p가 해제될 때 p 먼저 소멸자 호출, g 소멸자 호출
+  - 리뷰: MyGuild는 처음에 비어 있어서 놓을 게 없고, Guild 숫자는 2가 된다. 지역 변수는 나중에 만든 g가 먼저 사라진다. g가 사라져도 MyGuild가 붙잡고 있어서 Guild는 남고, Player가 지워지면서 MyGuild를 놓을 때 Guild가 지워진다. 출력 순서(Player → Guild)는 맞음.
+- 2번 따라가기 (내 설명): 처음에 p에 플레이어, g에는 길드, myguild와 Leader는 비어 있는 상태. 다음에는 g에서 보는 길드를 myguild가 보고 있고 Leader는 비어 있음, 플레이어 1, 길드 2. 다음에는 p와 리더가 플레이어를 보고 있고, 카운트도 각각 2. 소멸할 때는 나중에 만든 g부터, 카운트가 0이 아니기에 카운트만 줄이고 사라짐, 플레이어 2 길드 1. p 또한 하나 줄여도 1이어서 결국 둘 다 해제가 안 되는 건가?
+  - 리뷰: 정확하다. 남은 1은 서로의 멤버(Player 안의 MyGuild, Guild 안의 Leader)가 들고 있다. 밖에서는 아무도 둘을 가리키지 않는데 서로가 서로를 붙잡고 있어서 영영 0이 되지 않는다. 이게 **순환 참조**.
+
 ### MyVector 설계 결정
 
 **처음 capacity: 0으로 시작할까, 미리 몇 칸 잡을까? (2026-10-18)**
