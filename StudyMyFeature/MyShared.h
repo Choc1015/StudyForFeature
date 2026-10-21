@@ -23,7 +23,11 @@ public:
 	virtual ~MyShared()
 	{
 		*NumPointer -= 1;
-		delete Data;
+		if(*NumPointer == 0)
+		{
+			delete NumPointer;
+			delete Data;
+		}
 
 	}
 

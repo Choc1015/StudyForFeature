@@ -484,6 +484,9 @@
   - 결과: `숫자: 1 / Player / Character / 끝`
   - 확인: `MyShared<int>`, `MyShared<std::string>`도 이제 컴파일된다 (보스를 고칠 필요가 없어짐).
   - 남은 것: 소멸자가 숫자를 보지 않고 무조건 delete한다. 숫자를 담은 int도 아무도 해제하지 않는다.
+- MyShared 3차: 소멸자에서 `*NumPointer -= 1;` 후 0일 때만 `delete NumPointer; delete Data;`
+  - 결과: `숫자: 1 / Player / Character / 끝` (한 명일 때는 출력 동일)
+  - 리뷰: 정확. 숫자 int까지 같이 해제한 것도 맞다.
 
 ### MyVector 설계 결정
 
