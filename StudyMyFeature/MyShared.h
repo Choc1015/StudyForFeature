@@ -31,6 +31,24 @@ public:
 
 	}
 
+	MyShared(const MyShared& Other)
+	{
+		Data = Other.Data;
+		NumPointer = Other.NumPointer;
+		*NumPointer += 1;
+
+	}
+
+	MyShared& operator=(const MyShared& Other)
+	{
+		Data = Other.Data;
+		NumPointer = Other.NumPointer;
+		*NumPointer += 1;
+
+
+		return *this;
+	}
+
 
 
 private:

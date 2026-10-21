@@ -487,6 +487,18 @@
 - MyShared 3차: 소멸자에서 `*NumPointer -= 1;` 후 0일 때만 `delete NumPointer; delete Data;`
   - 결과: `숫자: 1 / Player / Character / 끝` (한 명일 때는 출력 동일)
   - 리뷰: 정확. 숫자 int까지 같이 해제한 것도 맞다.
+- 복사 생성자: 상대의 Data, NumPointer를 그대로 받고 `*NumPointer += 1;`
+  - 결과: `A: 1 / B: 2 / B 놓음: 1 / Player / Character / 끝` ← 성공 기준 그대로. 일부러 하는 얕은 복사 + 숫자로 마지막 사람 찾기.
+- 복사 대입도 미리 만듦 (복사 생성자와 같은 본문 + `return *this;`)
+  - 검사:
+    ```
+    [copy assign] a = P1, c = P2, 그다음 c = a
+      count: 2
+      Player / Character 한 번만 (P1, 끝에서)   ← P2는 해제되지 않음 (누수)
+    [self assign] a = a
+      count: 2, Player 해제 없음                 ← 혼자인데 2라서 영영 0이 안 됨 (누수)
+    ```
+  - 리뷰: 복사 생성자는 정확. 복사 대입은 c가 원래 보던 P2를 "놓는" 처리가 없다 (숫자 -1, 0이면 해제). 자기 대입 확인도 없다.
 
 ### MyVector 설계 결정
 
