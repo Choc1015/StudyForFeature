@@ -6,23 +6,23 @@ class MyShared
 public:
 
 	T* Data;
-	int Num = 0;;
+	int* NumPointer;
 
 
 	MyShared(T* Other)
 	{
 
 		Data = Other;
-		++Num;
-		Other->count = Num;
-		
+		NumPointer = new int();
+		*NumPointer += 1;
+
 		Other = nullptr;
 
 	}
 
 	virtual ~MyShared()
 	{
-		Num--;
+		*NumPointer -= 1;
 		delete Data;
 
 	}

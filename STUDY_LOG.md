@@ -480,6 +480,10 @@
   - 내 질문: 만약 다른 클래스에 count가 없는 걸 넣으면 에러 아닌가? → 직접 한계를 찾아냄
   - 확인: `MyShared<std::string>` → `error C2039: 'count': is not a member of 'std::basic_string<...>'`
   - 리뷰: 맞다. 이게 침투형의 한계이고, std::shared_ptr가 숫자를 객체 밖에 따로 두는 이유. 그리고 지금 MyShared 안의 `Num`은 각자 따로 갖는 "수첩"이라 여러 명이 공유할 수 없다. 소멸자도 숫자를 보지 않고 무조건 delete한다.
+- MyShared 2차: Character의 count 삭제. `int* NumPointer`, 생성자에서 `NumPointer = new int(); *NumPointer += 1;`
+  - 결과: `숫자: 1 / Player / Character / 끝`
+  - 확인: `MyShared<int>`, `MyShared<std::string>`도 이제 컴파일된다 (보스를 고칠 필요가 없어짐).
+  - 남은 것: 소멸자가 숫자를 보지 않고 무조건 delete한다. 숫자를 담은 int도 아무도 해제하지 않는다.
 
 ### MyVector 설계 결정
 
