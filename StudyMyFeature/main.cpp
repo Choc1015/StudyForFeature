@@ -98,7 +98,8 @@ int main()
 			w = new MyWeak<Character>(s);
 			cout << "strong " << s.ControlNum->Strong << ", weak " << s.ControlNum->Weak << endl;   // 1, 1
 		}
-		cout << "s 놓음" << endl;      // 이 앞에 Player / Character
+		cout << "s 놓음" << endl;
+		cout << "Expired: " << w->Expired() << endl;   // 진짜 weak면 1이 나와야 함   // 이 앞에 Player / Character
 		delete w;                        // 덩어리는 여기서 삭제되어야 해요
 	}
 	cout << "끝" << endl;

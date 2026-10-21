@@ -560,6 +560,11 @@
     Weak를 무시한 MyShared: s gone → w sees strong = -572662307, weak = -572662307  ← 0xDDDDDDDD, 이미 해제된 덩어리
     ```
   - 리뷰: 테스트의 핵심은 "s 놓음"과 "delete w" 사이. 보스는 지워졌지만 덩어리는 살아 있어야 w가 strong 0을 보고 죽었다는 걸 안다. Weak를 안 보고 덩어리를 같이 지우면 w는 해제된 메모리를 읽고, 소멸자에서 거기에 쓰기까지 한다. MyWeak 코드는 정확하고 누수도 없음.
+  - 내 질문: 숫자를 나누기 전처럼 weak도 count를 올리면 2였으니까 똑같지 않냐?
+    - 리뷰: 그러면 s가 사라져도 count 1이라 보스가 안 지워진다. weak가 보스를 살려 두는 쪽이 되어 shared_ptr와 같아지고, 길드 예제의 순환 참조도 다시 생긴다.
+  - 내 지적: 예시 코드가 좀 별로였다. → 맞다. Player 해제가 한 번 나오는 것만 봐서는 숫자가 하나든 둘이든 출력이 같았다. "s가 사라진 순간 보스가 지워졌는가"를 확인하는 테스트여야 했다.
+- MyWeak `Expired()`: `ControlNum->Strong == 0`이면 true
+  - 결과: `strong 1, weak 1 / Player / Character / s 놓음 / Expired: 1 / 끝` ✅ (숫자 하나짜리였다면 여기서 0이 나왔을 것)
 
 ### MyVector 설계 결정
 

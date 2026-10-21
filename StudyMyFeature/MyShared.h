@@ -118,6 +118,16 @@ public:
 		}
 	}
 
+
+	bool Expired()
+	{
+		if (ControlNum->Strong == 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
 private:
 
 };
