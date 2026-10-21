@@ -525,6 +525,18 @@
   - 리뷰: MyGuild는 처음에 비어 있어서 놓을 게 없고, Guild 숫자는 2가 된다. 지역 변수는 나중에 만든 g가 먼저 사라진다. g가 사라져도 MyGuild가 붙잡고 있어서 Guild는 남고, Player가 지워지면서 MyGuild를 놓을 때 Guild가 지워진다. 출력 순서(Player → Guild)는 맞음.
 - 2번 따라가기 (내 설명): 처음에 p에 플레이어, g에는 길드, myguild와 Leader는 비어 있는 상태. 다음에는 g에서 보는 길드를 myguild가 보고 있고 Leader는 비어 있음, 플레이어 1, 길드 2. 다음에는 p와 리더가 플레이어를 보고 있고, 카운트도 각각 2. 소멸할 때는 나중에 만든 g부터, 카운트가 0이 아니기에 카운트만 줄이고 사라짐, 플레이어 2 길드 1. p 또한 하나 줄여도 1이어서 결국 둘 다 해제가 안 되는 건가?
   - 리뷰: 정확하다. 남은 1은 서로의 멤버(Player 안의 MyGuild, Guild 안의 Leader)가 들고 있다. 밖에서는 아무도 둘을 가리키지 않는데 서로가 서로를 붙잡고 있어서 영영 0이 되지 않는다. 이게 **순환 참조**.
+- 질문: Leader가 숫자를 안 올리고 보기만 하면?
+  - 내 답: 보기만 한다는 게 이해가 안 가는데, 플레이어 숫자가 1이면 처음에는 1 2, g가 사라질 때 1 1, p가 사라질 때 0 1. 그래도 길드는 남아 있는 거 아닌가?
+  - 데모 (Leader를 weak_ptr로): `player count = 1, guild count = 2` / `guild can still see its leader? yes` / `[Player deleted]` / `[Guild deleted]`
+  - 리뷰: 숫자는 정확. 빠진 한 단계는 Player가 지워질 때 Player 안의 멤버 MyGuild도 같이 사라지면서 Guild 숫자가 1 → 0이 되는 것 (1번 표의 ④-3과 같음).
+- 질문: 그러니까 weak 포인터는 공유 포인터에서 count만 없는 개념인 건가?
+  - 데모 (일반 포인터 vs weak_ptr, 대상이 먼저 지워진 뒤):
+    ```
+    raw  : still has address (dangling!)
+    weak : expired (knows it's gone)
+    lock : nothing, player is gone
+    ```
+  - 리뷰: 맞다, 숫자를 안 올리는 shared_ptr. 그리고 일반 포인터와 다른 점이 하나 더 있다. 대상이 지워졌는지 알 수 있다 (expired). 쓸 때는 lock()으로 잠깐 shared_ptr를 받아서, 살아 있으면 쓰고 없으면 안 쓴다.
 
 ### MyVector 설계 결정
 
