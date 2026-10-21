@@ -1,20 +1,32 @@
 #pragma once
 
+struct ControlBlock
+{
+public:
+
+	int Strong = 0;
+	int Weak = 0;
+
+};
+
+
 template <typename T>
 class MyShared
 {
 public:
 
 	T* Data;
-	int* NumPointer;
+	ControlBlock* ControlNum;
 
 
 	MyShared(T* Other)
 	{
 
 		Data = Other;
-		NumPointer = new int();
-		*NumPointer += 1;
+
+		ControlNum = new ControlBlock;
+		ControlNum->Strong++;
+
 
 		Other = nullptr;
 
@@ -22,20 +34,26 @@ public:
 
 	virtual ~MyShared()
 	{
-		*NumPointer -= 1;
-		if(*NumPointer == 0)
+	
+
+		ControlNum->Strong--;
+		if (ControlNum->Strong == 0)
 		{
-			delete NumPointer;
 			delete Data;
 		}
+
+
 
 	}
 
 	MyShared(const MyShared& Other)
 	{
+		ControlNum = Other.ControlNum;
 		Data = Other.Data;
-		NumPointer = Other.NumPointer;
-		*NumPointer += 1;
+		ControlNum->Strong = Other.ControlNum->Strong;
+		ControlNum->Strong++;
+
+
 
 	}
 
@@ -46,17 +64,17 @@ public:
 			return *this;
 		}
 
-		*NumPointer -= 1;
-		if (*NumPointer == 0)
+		ControlNum->Strong--;
+		if (ControlNum->Strong == 0)
 		{
-			delete NumPointer;
 			delete Data;
 		}
 
+
 		
 		Data = Other.Data;
-		NumPointer = Other.NumPointer;
-		*NumPointer += 1;
+		ControlNum->Strong = Other.ControlNum->Strong;
+		ControlNum->Strong++;
 
 
 

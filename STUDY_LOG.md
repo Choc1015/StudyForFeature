@@ -537,6 +537,14 @@
     lock : nothing, player is gone
     ```
   - 리뷰: 맞다, 숫자를 안 올리는 shared_ptr. 그리고 일반 포인터와 다른 점이 하나 더 있다. 대상이 지워졌는지 알 수 있다 (expired). 쓸 때는 lock()으로 잠깐 shared_ptr를 받아서, 살아 있으면 쓰고 없으면 안 쓴다.
+- 직접 만들기로 함. 내 말: 강한, 약한 숫자 이해가 안 돼.
+  - 데모 (숫자 덩어리가 언제 생기고 지워지는지 출력): s 생성 → [count block created], strong 1 / w 생성 → strong 1, weak 1 / s 놓음 → [Boss deleted], strong 0, w는 expired를 앎 / w 놓음 → [count block deleted]
+  - 정리: strong이 0이면 보스를 지우고, strong과 weak가 모두 0이면 숫자 덩어리를 지운다. weak_ptr가 "죽었네"를 확인하려면 보스가 지워진 뒤에도 덩어리는 남아 있어야 한다.
+- MyShared를 ControlBlock(Strong, Weak) 구조로 바꾸기
+  - 내 질문: 구조체를 new로 생성하는 부분이 틀린 거 같은데? → new는 맞음. 복사 생성자에서 덩어리 주소가 아니라 숫자 값을 복사하고 있었다.
+  - 내 과정: 처음에 복사 생성자에다가 new로 새로운 객체를 받았다가, 출력 결과가 1 1 1이 떠서 디버깅해 보니 a의 ControlBlock과 b의 ControlBlock이 복사된 게 아니라 따로 놀고 있어서 뭐지 했는데, b의 ControlBlock이 a랑 얕은 복사되어야 하니까 같은 객체를 받아야 한다는 걸 깨닫고 고침.
+  - 결과: main `A: 1 / B: 2 / B 놓음: 1 / Player / Character / 끝` ✅
+  - 남은 것: 복사 대입은 아직 숫자 값을 복사하고 있다 (c = a 후 count 1, 2여야 함). 덩어리를 지우는 코드도 아직 없다.
 
 ### MyVector 설계 결정
 

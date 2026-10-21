@@ -93,12 +93,12 @@ int main()
 {
 	{
 		MyShared<Character> a(new Player());
-		cout << "A: " << *(a.NumPointer) << endl;     // 1
+		cout << "A: " << a.ControlNum->Strong << endl;     // 1
 		{
 			MyShared<Character> b = a;
-			cout << "B: " << *(a.NumPointer) << endl; // 2
+			cout << "B: " << a.ControlNum->Strong << endl; // 2
 		}
-		cout << "B 놓음: " << *(a.NumPointer) << endl; // 1, 아직 Player 안 지워짐
+		cout << "B 놓음: " << a.ControlNum->Strong << endl; // 1, 아직 Player 안 지워짐
 	}
 	cout << "끝" << endl;
 
