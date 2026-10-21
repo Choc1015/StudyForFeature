@@ -1,23 +1,25 @@
 #pragma once
 
 template <typename T>
-class MyShared 
+class MyShared
 {
 public:
-	
+
 	T* Data;
 	int Num = 0;;
-	
-	
+
+
 	MyShared(T* Other)
 	{
-		
-		Data = Other;
-		Other = nullptr;
-		Num++;
 
+		Data = Other;
+		++Num;
+		Other->count = Num;
+		
+		Other = nullptr;
 
 	}
+
 	virtual ~MyShared()
 	{
 		Num--;

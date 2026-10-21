@@ -473,6 +473,13 @@
   - 내 답: 숫자를 보스가 가지고 있으면 되잖아? → 정답. 침투형(intrusive) 참조 카운팅.
   - 비교: std::shared_ptr는 숫자를 보스 밖에 따로 만들고(new int), 스마트 포인터가 보스 주소 + 숫자 주소 두 개를 든다. 차이는 보스 클래스를 고쳐야 하느냐뿐 (int, std::string처럼 고칠 수 없는 타입에는 침투형을 못 씀).
   - 결정: 내 방식(보스가 숫자를 가짐)으로 먼저 만들어 보고, 한계를 직접 겪어 본다.
+- "여러 명이 가리킨다"가 이해되지 않아서 std::shared_ptr 데모를 돌려 봄: 보스는 한 번만 생성, A/B/C 주소 같음, 복사할 때 count 1→2→3, 놓을 때 3→2→1, 마지막에만 Boss deleted.
+  - 내 말: 이제 이해가 가네. 오히려 나는 코드를 보니까 이해가 가는 거 같아.
+- MyShared 1차: Character에 `int count = 0;` 추가. MyShared는 `T* Data`와 `int Num`을 들고, 생성자에서 `++Num; Other->count = Num;`, 소멸자에서 `Num--; delete Data;`
+  - 결과: `숫자: 1`
+  - 내 질문: 만약 다른 클래스에 count가 없는 걸 넣으면 에러 아닌가? → 직접 한계를 찾아냄
+  - 확인: `MyShared<std::string>` → `error C2039: 'count': is not a member of 'std::basic_string<...>'`
+  - 리뷰: 맞다. 이게 침투형의 한계이고, std::shared_ptr가 숫자를 객체 밖에 따로 두는 이유. 그리고 지금 MyShared 안의 `Num`은 각자 따로 갖는 "수첩"이라 여러 명이 공유할 수 없다. 소멸자도 숫자를 보지 않고 무조건 delete한다.
 
 ### MyVector 설계 결정
 

@@ -91,10 +91,9 @@ void TestMoveAssign()
 
 int main()
 {
-
 	{
 		MyShared<Character> a(new Player());
-		cout << "숫자: " << a.Num << endl;   // 1
+		cout << "숫자: " << a.Data->count << endl;   // 1
 	}
 	cout << "끝" << endl;
 
