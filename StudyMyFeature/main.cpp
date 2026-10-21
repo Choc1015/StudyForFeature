@@ -92,13 +92,14 @@ void TestMoveAssign()
 int main()
 {
 	{
-		MyShared<Character> a(new Player());
-		cout << "A: " << a.ControlNum->Strong << endl;     // 1
+		MyWeak<Character>* w = nullptr;
 		{
-			MyShared<Character> b = a;
-			cout << "B: " << a.ControlNum->Strong << endl; // 2
+			MyShared<Character> s(new Player());
+			w = new MyWeak<Character>(s);
+			cout << "strong " << s.ControlNum->Strong << ", weak " << s.ControlNum->Weak << endl;   // 1, 1
 		}
-		cout << "B 놓음: " << a.ControlNum->Strong << endl; // 1, 아직 Player 안 지워짐
+		cout << "s 놓음" << endl;      // 이 앞에 Player / Character
+		delete w;                        // 덩어리는 여기서 삭제되어야 해요
 	}
 	cout << "끝" << endl;
 

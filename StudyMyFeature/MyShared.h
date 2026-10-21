@@ -34,7 +34,7 @@ public:
 
 	virtual ~MyShared()
 	{
-	
+
 
 		ControlNum->Strong--;
 		if (ControlNum->Strong == 0)
@@ -78,7 +78,7 @@ public:
 		}
 
 
-		
+
 		Data = Other.Data;
 		ControlNum = Other.ControlNum;
 		ControlNum->Strong++;
@@ -92,5 +92,32 @@ public:
 
 private:
 
+
+};
+
+template <typename T>
+class MyWeak
+{
+public:
+	T* Data;
+	ControlBlock* ControlNum;
+
+	MyWeak(const MyShared<T>& Shared)
+	{
+		Data = Shared.Data;
+		ControlNum = Shared.ControlNum;
+		Shared.ControlNum->Weak++;
+	}
+	virtual ~MyWeak()
+	{
+		ControlNum->Weak--;
+
+		if (ControlNum->Strong == 0 && ControlNum->Weak == 0)
+		{
+			delete ControlNum;
+		}
+	}
+
+private:
 
 };

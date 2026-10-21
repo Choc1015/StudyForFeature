@@ -551,6 +551,15 @@
 - 소멸자와 복사 대입의 "놓기"에 `if (Weak == 0) delete ControlNum;` 추가
   - 검사 (복사 생성, 복사 대입, 자기 대입 + 디버그 힙 누수 검사): Player 두 번 해제, `no leaks` ✅
   - **ControlBlock 버전 MyShared 완료.** 다음은 MyWeak.
+- MyWeak 1차: 생성자 `MyWeak(const MyShared<T>& Shared)`에서 Data, ControlNum을 그대로 받고 Weak +1. 소멸자에서 Weak -1, Strong과 Weak 둘 다 0이면 ControlNum만 delete.
+  - 내 질문: "생성자: MyShared를 받아서 (const MyShared<T>&로)"가 무슨 소리인지? → weak_ptr는 이미 있는 shared_ptr로부터 만든다 (`w = s`). &로 받는 이유는 MyShared를 복사하면 Strong이 올라가기 때문.
+  - 내 질문: 메인 테스트 코드가 weak가 없을 때랑 다른 건 없지? 어차피 두 번 지우는 거니까.
+  - 비교 실험 (s가 먼저 사라진 뒤 w가 보는 숫자):
+    ```
+    진짜 코드            : s gone → w sees strong = 0, weak = 1                     ← "죽었네"를 알 수 있음
+    Weak를 무시한 MyShared: s gone → w sees strong = -572662307, weak = -572662307  ← 0xDDDDDDDD, 이미 해제된 덩어리
+    ```
+  - 리뷰: 테스트의 핵심은 "s 놓음"과 "delete w" 사이. 보스는 지워졌지만 덩어리는 살아 있어야 w가 strong 0을 보고 죽었다는 걸 안다. Weak를 안 보고 덩어리를 같이 지우면 w는 해제된 메모리를 읽고, 소멸자에서 거기에 쓰기까지 한다. MyWeak 코드는 정확하고 누수도 없음.
 
 ### MyVector 설계 결정
 
