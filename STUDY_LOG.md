@@ -565,6 +565,12 @@
   - 내 지적: 예시 코드가 좀 별로였다. → 맞다. Player 해제가 한 번 나오는 것만 봐서는 숫자가 하나든 둘이든 출력이 같았다. "s가 사라진 순간 보스가 지워졌는가"를 확인하는 테스트여야 했다.
 - MyWeak `Expired()`: `ControlNum->Strong == 0`이면 true
   - 결과: `strong 1, weak 1 / Player / Character / s 놓음 / Expired: 1 / 끝` ✅ (숫자 하나짜리였다면 여기서 0이 나왔을 것)
+- Lock()이 뭔지: 데모 (길드가 길드장을 lock()으로 빌려 치유) → 살아 있으면 빌리는 동안 strong 2, 다 쓰면 1, 나간 뒤에는 빈 것을 받아 건너뜀
+  - 내 이해: Lock이라는 건 살아 있으면 확인하는 사이 죽지 않게 Strong을 하나 추가해서 보고, 다 보면 다시 빼는 기능인가?
+  - 리뷰: 정확. 다만 빼는 건 Lock이 아니라, Lock이 돌려준 MyShared의 소멸자가 범위가 끝날 때 자동으로 한다 (RAII).
+- Lock 1단계: 빈 MyShared — `MyShared()`에서 Data, ControlNum을 nullptr로, 소멸자에서 ControlNum이 nullptr이면 바로 return
+  - 검사: 빈 MyShared 혼자 → 정상 ✅ / 빈 MyShared를 복사 → exit code -1073741819 (크래시) ❌
+  - 남은 것: 복사 생성자가 빈 상대를 받을 때 `ControlNum->Strong++`에서 nullptr를 건드림. 복사 대입도 같은 처리 필요.
 
 ### MyVector 설계 결정
 

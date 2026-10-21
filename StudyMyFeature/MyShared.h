@@ -18,6 +18,11 @@ public:
 	T* Data;
 	ControlBlock* ControlNum;
 
+	MyShared()
+	{
+		Data = nullptr;
+		ControlNum = nullptr;
+	}
 
 	MyShared(T* Other)
 	{
@@ -34,7 +39,10 @@ public:
 
 	virtual ~MyShared()
 	{
-
+		if (ControlNum == nullptr)
+		{
+			return;
+		}
 
 		ControlNum->Strong--;
 		if (ControlNum->Strong == 0)
