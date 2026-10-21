@@ -41,9 +41,18 @@ public:
 
 	MyShared& operator=(const MyShared& Other)
 	{
+		if (this == &Other)
+		{
+			return *this;
+		}
+
+		Data = nullptr;
+		NumPointer = nullptr;
+		
 		Data = Other.Data;
 		NumPointer = Other.NumPointer;
 		*NumPointer += 1;
+
 
 
 		return *this;
