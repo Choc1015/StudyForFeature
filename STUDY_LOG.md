@@ -502,6 +502,9 @@
 - 복사 대입 2차: 자기 대입 확인 추가, 받기 전에 `Data = nullptr; NumPointer = nullptr;`
   - 검사: 자기 대입은 count 1로 정상, Player도 해제 ✅. c = a는 여전히 Player 한 번만 해제 (P2 누수) ❌
   - 리뷰: nullptr로 바꾸는 건 "주소를 잊는 것"이지 "놓는 것"이 아니다. 주소만 잊으면 P2의 숫자는 1인 채로 남고 아무도 delete하지 않는다. 놓는다 = 소멸자가 하는 일 (숫자 -1, 0이면 Data와 숫자 delete).
+- 복사 대입 3차: nullptr 두 줄 대신 `if (*NumPointer == 0) { delete NumPointer; delete Data; }`
+  - 검사: c = a에서 여전히 P2 누수
+  - 리뷰: 0인지 확인하기 전에 숫자를 1 줄이는 줄이 빠졌다. P2의 숫자는 1이라 0이 될 일이 없다.
 
 ### MyVector 설계 결정
 

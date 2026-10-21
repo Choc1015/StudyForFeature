@@ -46,8 +46,12 @@ public:
 			return *this;
 		}
 
-		Data = nullptr;
-		NumPointer = nullptr;
+		if (*NumPointer == 0)
+		{
+			delete NumPointer;
+			delete Data;
+		}
+
 		
 		Data = Other.Data;
 		NumPointer = Other.NumPointer;
