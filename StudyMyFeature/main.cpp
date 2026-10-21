@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
-#include "MyUnique1.h"
+#include "MyShared.h"
 
 using namespace std;
 
@@ -79,27 +79,25 @@ void TestMoveAssign()
 	assert(a.size() == 0);
 }
 
-void Spawn(bool bCancel)
-{
-	MyUnique1<Character> c(new Player());
-	if (bCancel)                   // ②
-	{
-		return;                    // ③
-	}
-}
+//void Spawn(bool bCancel)
+//{
+//	MyUnique1<Character> c(new Player());
+//	if (bCancel)                   // ②
+//	{
+//		return;                    // ③
+//	}
+//}
 
 
 int main()
 {
 
-	
 	{
-		MyUnique1<Character> a(new Player());
-		MyUnique1<Character> b(new Player());
-		b = std::move(a);
-		cout << "대입 끝" << endl;
+		MyShared<Character> a(new Player());
+		cout << "숫자: " << a.Num << endl;   // 1
 	}
 	cout << "끝" << endl;
+
 
 	return 0;
 }

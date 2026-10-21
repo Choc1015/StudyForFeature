@@ -56,5 +56,8 @@
     <ClInclude Include="MyUnique1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyShared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
