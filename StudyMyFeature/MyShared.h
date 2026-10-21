@@ -46,6 +46,7 @@ public:
 			return *this;
 		}
 
+		*NumPointer -= 1;
 		if (*NumPointer == 0)
 		{
 			delete NumPointer;
