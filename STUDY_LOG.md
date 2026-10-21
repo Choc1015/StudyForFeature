@@ -575,6 +575,10 @@
   - 처음엔 복사 대입(operator=)의 받는 부분에 넣음 → 복사 생성자는 여전히 크래시. 받는 코드 모양이 같아서 헷갈림 (끝에 `return *this;`가 있으면 대입).
   - 복사 생성자에도 넣음 → 빈 MyShared 복사 ok ✅, 누수 검사 no leaks ✅
   - 남은 것: 복사 대입에서 "내가" 빈 MyShared일 때 (`e = a;`) 앞부분의 놓기가 `ControlNum->Strong--`로 nullptr를 건드림.
+- Lock 3단계: 복사 대입의 놓기를 nullptr 확인으로 감싸기
+  - 1차: `Strong--` 한 줄만 감쌈 → 다음 줄 `if (ControlNum->Strong == 0)`에서 nullptr를 읽어 크래시. 바꾸는 것뿐 아니라 읽는 것도 안 된다.
+  - 2차: 놓기 블록 전체를 감쌈
+  - 검사: `e = a` → strong 2 / `a = empty` → e strong 1, a 비어 있음 / `empty = empty` → ok / no leaks ✅
 
 ### MyVector 설계 결정
 

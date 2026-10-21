@@ -78,15 +78,20 @@ public:
 			return *this;
 		}
 
-		ControlNum->Strong--;
-		if (ControlNum->Strong == 0)
+		if (ControlNum != nullptr)
 		{
-			delete Data;
-			if (ControlNum->Weak == 0)
+			ControlNum->Strong--;
+			if (ControlNum->Strong == 0)
 			{
-				delete ControlNum;
+				delete Data;
+				if (ControlNum->Weak == 0)
+				{
+					delete ControlNum;
+				}
 			}
 		}
+
+		
 
 
 
