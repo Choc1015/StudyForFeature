@@ -26,7 +26,7 @@
 | 스마트 포인터 1: 직접 delete의 함정 | 완료 (2026-10-20) |
 | 스마트 포인터 2: unique_ptr | 완료 (2026-10-20) |
 | 스마트 포인터 3: shared_ptr | 완료 (2026-10-21) |
-| 스마트 포인터 4: weak_ptr | |
+| 스마트 포인터 4: weak_ptr | 완료 (2026-10-21) |
 
 ---
 
@@ -513,7 +513,7 @@
     ```
   - **스마트 포인터 3 완료.** MyShared: 숫자를 객체 밖에(new int), 복사하면 +1, 놓으면 -1, 0일 때만 해제 = `std::shared_ptr`의 참조 카운팅.
 
-### 스마트 포인터 4: weak_ptr (2026-10-21, 진행 중)
+### 스마트 포인터 4: weak_ptr (2026-10-21)
 
 - 데모: Player는 `shared_ptr<Guild> MyGuild`, Guild는 `shared_ptr<Player> Leader`를 가짐
   ```
@@ -588,6 +588,9 @@
     8 bytes, Data: 90 45 2C 33 F7 7F 00 00   ← Character 객체 (8바이트 = vptr, 실험 3에서 본 크기)
     ```
   - 리뷰: `new T()`가 쓰지도 않을 Character를 하나 새로 만들고, 그 생성자가 ControlBlock도 하나 만든다. 바로 다음 줄에서 Data와 ControlNum을 덮어써서 둘 다 잃어버린다 (MyVector 1단계 temp 누수와 같은 모양). 빈 MyShared로 시작하면 된다.
+- Lock 5단계: `MyShared<T> emptyShared;`(진짜 빈 것)로 시작
+  - 검사: Lock 누수 검사 no leaks, 이전 MyShared 검사(복사, 대입, 빈 상태) 모두 no leaks ✅
+  - **스마트 포인터 4 완료.** MyShared + MyWeak: ControlBlock(Strong, Weak), strong 0이면 보스 삭제, 둘 다 0이면 덩어리 삭제, Expired(), Lock() = `std::shared_ptr` / `std::weak_ptr`의 핵심 구조.
 
 ### MyVector 설계 결정
 

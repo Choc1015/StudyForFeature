@@ -158,7 +158,7 @@ public:
 		}
 		else
 		{
-			MyShared<T> emptyShared = new T();
+			MyShared<T> emptyShared;
 			ControlNum->Strong++;
 			emptyShared.Data = Data;
 			emptyShared.ControlNum = ControlNum;
