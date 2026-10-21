@@ -50,7 +50,6 @@ public:
 	{
 		ControlNum = Other.ControlNum;
 		Data = Other.Data;
-		ControlNum->Strong = Other.ControlNum->Strong;
 		ControlNum->Strong++;
 
 
@@ -73,7 +72,7 @@ public:
 
 		
 		Data = Other.Data;
-		ControlNum->Strong = Other.ControlNum->Strong;
+		ControlNum = Other.ControlNum;
 		ControlNum->Strong++;
 
 

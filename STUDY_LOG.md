@@ -545,6 +545,9 @@
   - 내 과정: 처음에 복사 생성자에다가 new로 새로운 객체를 받았다가, 출력 결과가 1 1 1이 떠서 디버깅해 보니 a의 ControlBlock과 b의 ControlBlock이 복사된 게 아니라 따로 놀고 있어서 뭐지 했는데, b의 ControlBlock이 a랑 얕은 복사되어야 하니까 같은 객체를 받아야 한다는 걸 깨닫고 고침.
   - 결과: main `A: 1 / B: 2 / B 놓음: 1 / Player / Character / 끝` ✅
   - 남은 것: 복사 대입은 아직 숫자 값을 복사하고 있다 (c = a 후 count 1, 2여야 함). 덩어리를 지우는 코드도 아직 없다.
+- 복사 대입도 `ControlNum = Other.ControlNum;`으로 수정, 복사 생성자의 필요 없는 줄 정리
+  - 검사: c = a → 대입 순간 P2 해제, count 2, 끝에서 P1 해제 ✅ / a = a → count 1 ✅
+  - 남은 것: strong과 weak가 모두 0일 때 ControlBlock을 delete하는 코드 (지금은 덩어리가 누수)
 
 ### MyVector 설계 결정
 
